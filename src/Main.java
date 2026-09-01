@@ -2,38 +2,53 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+
+        //declaração de variaveis 
         int op =0;
         int escolherProduto =0;
         int qntProdutos;
         double demanda;
         Scanner teclado = new Scanner(System.in);
-        //public MateriaPrima(int id, String nome, double quantidade, String unidade, double quantidadeMinima)
-        //MateriaPrima materiaPrima = new MateriaPrima(1, "Aluminio", 100.0, "kg", 10.0);
-        //Produto produto = new Produto(1, "Produto A");
 
+
+        //declaração de materia prima
         MateriaPrima Aluminio = new MateriaPrima("AL2618", "Alumínio", 100.0, "kg", 10.0);
 
+
+        //declaração de produto
         Produto Pistao = new Produto("PI0001", "Pistão", 5);
         Produto BlocoMotor = new Produto("BM0001", "Bloco do Motor", 30);
         Produto Blococabecote  = new Produto("BC0001", "Bloco do Cabeçote", 15);
-
         Produto[] produtos = { Pistao, BlocoMotor, Blococabecote };
 
+
+        //declaração de maquina
         Maquina torno = new Maquina("Torno", 50);
+
+
+        //declaração de esteira (nome provisorio)
         Esteira esteira1 = new Esteira(50);
+
+        //declaração de estação de inspeção (nome provisorio)
         EstacaoInspecao estacao1 = new EstacaoInspecao();
 
 
 
 
+        //mensagem de inicialização
 
-        System.out.println("=========================================\n            PLANTA INDUSTRIAL            \n=========================================");
+        System.out.println("=============================================\n                 RL AutoParts                \n       \"Movendo o futuro, peça por peça\"       \n=============================================\n");
+
+        System.out.println("Bem-vindos à nossa fábrica de peças automotivas!\nAqui transformamos tecnologia e precisão \nem componentes que garantem segurança, \ndesempenho e durabilidade para o seu veículo.\n");
+
+        
+        System.out.println("=============================================\n              PLANTA INDUSTRIAL              \n=============================================");
         System.out.println("\nMatéria-Prima: "+ Aluminio.getId() + " - " + Aluminio.getNome());
         System.out.println("Quantidade: " + Aluminio.getQuantidade() + " " + Aluminio.getUnidade());
         System.out.println("Unidade: " + Aluminio.getUnidade());
         System.out.println("\nProdutos Disponíveis: ");
         for(int i = 0; i < produtos.length; i++) {
-            System.out.println((i + 1) + " - " + produtos[i].getNome() + " (Demanda: " + produtos[i].getDemandaMateriaPrima() +" " + Aluminio. getUnidade() + ")");
+            System.out.println( (i + 1) + " - " + produtos[i].getNome() + " (Demanda: " + produtos[i].getDemandaMateriaPrima() +" " + Aluminio. getUnidade() + ")");
         }
 
 
@@ -42,7 +57,7 @@ public class Main {
     do {
     
 
-        System.out.println("\n=========================================\n              MENU PRINCIPAL             \n=========================================");
+        System.out.println("\n=============================================\n                MENU PRINCIPAL               \n=============================================\n");
         System.out.print("1 - Iniciar produção\n2 - Consultar estoque\n3 - Sair\n\nEscolha: ");
         op = teclado.nextInt();
         
@@ -75,7 +90,7 @@ public class Main {
                             if(esteira1.transportarInspecao()){
                                 esteira1.removerItem();
                                 estacao1.inspecionar(produtos[escolherProduto], qntProdutos);
-                                System.out.println("\n\n=========================================\n      PRODUÇÃO CONCLUIDA COM SUCESSO     \n=========================================");
+                                System.out.println("\n\n=============================================\n        PRODUÇÃO CONCLUIDA COM SUCESSO       \n=============================================");
                                 System.out.printf("\nEstoque restante de %s - %s: %.2f %s\n", Aluminio.getId(), Aluminio.getNome(), Aluminio.getQuantidade(), Aluminio.getUnidade());
                             }
                         }
