@@ -28,6 +28,7 @@ public class Main {
 
         //declaração de esteira (nome provisorio)
         Esteira esteira1 = new Esteira(50);
+        Esteira esteira2 = new Esteira(50);
 
         //declaração de estação de inspeção (nome provisorio)
         EstacaoInspecao estacao1 = new EstacaoInspecao();
@@ -83,12 +84,15 @@ public class Main {
                     if(esteira1.transportarMaquina(torno)){
                         qntProdutos = torno.processar((MateriaPrima)esteira1.removerItem(),produtos[escolherProduto], demanda);
                         if(qntProdutos>0){
-                            esteira1.adicionarItem(produtos[escolherProduto], demanda);
+                            if(!esteira2.estaLigada()) {
+                                esteira2.ligar();
+                            }
+                            esteira2.adicionarItem(produtos[escolherProduto], demanda);
                             if (!estacao1.estaLigada()) {
                                 estacao1.ativar();
                             }
-                            if(esteira1.transportarInspecao()){
-                                esteira1.removerItem();
+                            if(esteira2.transportarInspecao()){
+                                esteira2.removerItem();
                                 estacao1.inspecionar(produtos[escolherProduto], qntProdutos);
                                 System.out.println("\n\n=============================================\n        PRODUÇÃO CONCLUIDA COM SUCESSO       \n=============================================");
                                 System.out.printf("\nEstoque restante de %s - %s: %.2f %s\n", Aluminio.getId(), Aluminio.getNome(), Aluminio.getQuantidade(), Aluminio.getUnidade());
@@ -105,6 +109,7 @@ public class Main {
     teclado.close();
     System.out.printf("Saindo...");
     esteira1.desligar();
+    esteira2.desligar();
     torno.desligar();
     estacao1.desligar();
     }
