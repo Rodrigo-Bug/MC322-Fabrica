@@ -1,9 +1,10 @@
 public class MateriaPrima {
-    private String  id;
+    private String id;
     private String nome;
     private double quantidade;
     private String unidade;
     private double quantidadeMinima;
+    private double custoPorUnidade;
 
     public MateriaPrima(String id, String nome, double quantidade, String unidade, double quantidadeMinima) {
         this.id = id;
@@ -21,8 +22,6 @@ public class MateriaPrima {
         this.quantidade += quantidadeAdicional;
     }
 
-
-    
     public boolean verificarDisponibilidade(double quantidadeDemandada) {
         System.out.print("\n[OK] Verificando disponibilidade de Alumínio");
         if(this.quantidade >= quantidadeDemandada){

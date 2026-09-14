@@ -1,9 +1,11 @@
 import java.util.Scanner;
 
-public class Maquina {
+abstract class Maquina {
     private String nome;
     private boolean ligada;
-    //private int capacidadeMaxima;
+    private int capacidadeMaxima;
+    private double probabilidadeFalha;
+    private double custoOperacao;
 
     public Maquina(String nome, int capacidadeMaxima) {
         this.nome = nome;
@@ -11,16 +13,7 @@ public class Maquina {
         this.ligada = false;
     }
 
-    public void ligar() {
-        this.ligada = true;
-        System.out.printf("\n[OK] %s ligado(a).", this.nome);
-    }
-
-    public void desligar() {
-        this.ligada = false;
-        System.out.printf("\n[OK] %s desligado(a).",this.nome);
-    }
-
+    //Abstract
     public int processar(MateriaPrima materiaPrima, Produto obraPrima,double demandaNecessaria) {
         if (this.ligada) {
             if(demandaNecessaria%obraPrima.getDemandaMateriaPrima()<0.01){
@@ -64,11 +57,37 @@ public class Maquina {
         }
     }
 
+    public String getTipo()
+    {
+        return "";
+    }
+
+    //Concrete
+    public void ligar() {
+        this.ligada = true;
+        System.out.printf("\n[OK] %s ligado(a).", this.nome);
+    }
+
+    public void desligar() {
+        this.ligada = false;
+        System.out.printf("\n[OK] %s desligado(a).",this.nome);
+    }
+
     public String getNome() {
         return this.nome;
     }
 
+    public double getCustoOperacao()
+    {
+        return this.custoOperacao;
+    }
+
     public boolean estaLigada() {
         return this.ligada;
+    }
+
+    public boolean verificarFalha()
+    {
+        return true;
     }
 }

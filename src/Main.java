@@ -15,12 +15,20 @@ public class Main {
         MateriaPrima Aluminio = new MateriaPrima("AL2618", "Alumínio", 100.0, "kg", 10.0);
 
 
-        //declaração de produto
-        Produto Pistao = new Produto("PI0001", "Pistão", 5);
-        Produto BlocoMotor = new Produto("BM0001", "Bloco do Motor", 30);
-        Produto Blococabecote  = new Produto("BC0001", "Bloco do Cabeçote", 15);
-        Produto[] produtos = { Pistao, BlocoMotor, Blococabecote };
-
+        //declaração de produtos
+        Produto Cabecote3200A = new Cabecote("SJ3201A", "Cabecote 3200 Tipo A", 10, 0.8);
+        //SJ - Aplicacao (Uniao rotativa), 320 - Tamanho da uniao, 1A - Tipo de peca (Cabecote tipo A)
+        Produto Cabecote4550A = new Cabecote("SJ4551A", "Cabecote 4550 Tipo A", 13, 0.8);
+        Produto Cabecote3200B = new Cabecote("SJ3201B", "Cabecote 3200 Tipo B", 15, 0.8);
+        Produto Cabecote4550B = new Cabecote("SJ4551B", "Cabecote 4550 Tipo B", 18, 0.8);
+        Produto Corpo3200 = new Corpo("SJ3202", "Corpo 3200", 30, 0.3);
+        Produto Corpo4550 = new Corpo("SJ4552", "Corpo 4550", 40, 0.3);
+        Produto TuboConector3200 = new TuboConector("SJ3203", "Tubo Conector 3200", 10, 0.6);
+        Produto TuboConector3200R = new TuboConector("SJ3203R", "Tubo Conector 3200 revestido", 10, 0.8);
+        Produto TuboConector4550 = new TuboConector("SJ4553", "Tubo Conector 4550", 15, 0.6);
+        Produto TuboConector4550R = new TuboConector("SJ4553R", "Tubo Conector 4550 revestido", 15, 0.8);
+        Produto[] produtos = { Cabecote3200A, Cabecote4550A, Cabecote3200B, Cabecote4550B, Corpo3200, Corpo4550,
+                            TuboConector3200, TuboConector3200R, TuboConector4550, TuboConector4550R };
 
         //declaração de maquina
         Maquina torno = new Maquina("Torno", 50);
@@ -33,40 +41,64 @@ public class Main {
         //declaração de estação de inspeção (nome provisorio)
         EstacaoInspecao estacao1 = new EstacaoInspecao();
 
-
-
+    do {
 
         //mensagem de inicialização
 
-        System.out.println("=============================================\n                 RL AutoParts                \n       \"Movendo o futuro, peça por peça\"       \n=============================================\n");
+        System.out.println("================================================================================\n         "
+                        + "                         RL SOLUCOES\n                       \"Movendo o futuro, peça por pe"
+                        + "ça\"\n================================================================================\n\n");
 
-        System.out.println("Bem-vindos à nossa fábrica de peças automotivas!\nAqui transformamos tecnologia e precisão \nem componentes que garantem segurança, \ndesempenho e durabilidade para o seu veículo.\n");
-
+        System.out.println("Bem-vindos à nossa fábrica de unioes rotativas!\nAqui transformamos tecnologia e precisão "
+                        + "\nem componentes que garantem segurança, \ndesempenho e durabilidade.\n\n");
         
-        System.out.println("=============================================\n              PLANTA INDUSTRIAL              \n=============================================");
-        System.out.println("\nMatéria-Prima: "+ Aluminio.getId() + " - " + Aluminio.getNome());
-        System.out.println("Quantidade: " + Aluminio.getQuantidade() + " " + Aluminio.getUnidade());
-        System.out.println("Unidade: " + Aluminio.getUnidade());
-        System.out.println("\nProdutos Disponíveis: ");
-        for(int i = 0; i < produtos.length; i++) {
-            System.out.println( (i + 1) + " - " + produtos[i].getNome() + " (Demanda: " + produtos[i].getDemandaMateriaPrima() +" " + Aluminio. getUnidade() + ")");
-        }
-
-
-
-
-    do {
-    
-
-        System.out.println("\n=============================================\n                MENU PRINCIPAL               \n=============================================\n");
-        System.out.print("1 - Iniciar produção\n2 - Consultar estoque\n3 - Sair\n\nEscolha: ");
+        System.out.println("================================================================================\n         "
+                        + "       MENU PRINCIPAL\n====================================================================="
+                        + "===========\n");
+        System.out.print("\n  BUDGET ATUAL:  " + GerenciadorProducao.getBudget() + "\n\n\n");
+        System.out.print("  ATUALIZAR DEMANDAS\n\n1 - Atualizar demanda de cabecote\n2 - Atualizar demanda de corpo\n"
+                        + "3 - Atualizar demanda de tubo conector\n\n\n");
+        System.out.print("  INICIAR PRODUCAO\n\n4 - Fabricar cabecote\n5 - Fabricar corpo\n6 - Fabricar tubo conector"
+                        + "\n\n\n");
+        System.out.print("  CONSULTAS\n\n7 - Consultar estoque\n8 - Consultar materia-prima\n\n\n");
+        System.out.print("  COMPRAS\n\n9 - Comprar materia-prima\n\n\n\n0 - SAIR\n\n\n");
         op = teclado.nextInt();
         
-        
+menu:   switch(op)
+        {
+            case 1:
+                //codeblock
+                break;
+            case 2:
+                //codeblock
+                break;
+            case 3:
+                //codeblock
+                break;
+            case 4:
+                //codeblock
+                break;
+            case 5:
+                //codeblock
+                break;
+            case 6:
+                //codeblock
+                break;
+            case 7:
+                //codeblock
+                break;
+            case 8:
+                //codeblock
+                break;
+            case 9:
+                //codeblock
+                break;
+        }
+
         if (op == 2){
             System.out.printf("\n[OK] A quantitade de %s - %s é de: %.2f %s\n",Aluminio.getId(), Aluminio.getNome(), Aluminio.getQuantidade(), Aluminio.getUnidade());
         }else if (op == 1){
-            System.out.print("Selecione o produto (1-3): ");
+            System.out.print("Selecione o produto (1-10): ");
             escolherProduto=teclado.nextInt()-1;
             System.out.print("Informe a demanda de materia prima: ");
             demanda=teclado.nextInt();
@@ -105,7 +137,7 @@ public class Main {
 
 
 
-    } while (op != 3);
+    } while (op != 0);
     teclado.close();
     System.out.printf("Saindo...");
     esteira1.desligar();
