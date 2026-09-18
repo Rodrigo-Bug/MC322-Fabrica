@@ -9,6 +9,7 @@ public class Main {
         int qntProdutos;
         double demanda;
         Scanner teclado = new Scanner(System.in);
+        Menu menu = new Menu("=");
 
 
         //declaração de materia prima
@@ -45,16 +46,12 @@ public class Main {
 
         //mensagem de inicialização
 
-        System.out.println("================================================================================\n         "
-                        + "                         RL SOLUCOES\n                       \"Movendo o futuro, peça por pe"
-                        + "ça\"\n================================================================================\n\n");
+        menu.GenerateMenuTitle("RL SOLUCOES", true, "\"Movendo o futuro, peça por peça\"");
 
         System.out.println("Bem-vindos à nossa fábrica de unioes rotativas!\nAqui transformamos tecnologia e precisão "
                         + "\nem componentes que garantem segurança, \ndesempenho e durabilidade.\n\n");
-        
-        System.out.println("================================================================================\n         "
-                        + "       MENU PRINCIPAL\n====================================================================="
-                        + "===========\n");
+
+        menu.GenerateMenuTitle("MENU PRINCIPAL", false, "");
         System.out.print("\n  BUDGET ATUAL:  " + GerenciadorProducao.getBudget() + "\n\n\n");
         System.out.print("  ATUALIZAR DEMANDAS\n\n1 - Atualizar demanda de cabecote\n2 - Atualizar demanda de corpo\n"
                         + "3 - Atualizar demanda de tubo conector\n\n\n");
@@ -76,7 +73,8 @@ menu:   switch(op)
                 //codeblock
                 break;
             case 4:
-                //codeblock
+                System.out.print("Selecione o tipo de cabecote desejado (1-3): ");
+                escolherProduto=teclado.nextInt()-1;
                 break;
             case 5:
                 //codeblock
