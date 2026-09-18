@@ -1,16 +1,18 @@
 public class Menu
 {
-    private String adorno = "================================================================================\n";
+    private String adorno;
     private int nOfSpaces;
+
+    public void customize(String character)
+    {
+        this.adorno = character;
+    }
     
     public void GenerateMenuTitle(String title, Boolean useHeader, String header)
     {
-        System.out.println(adorno);
+        for(int i = 0;i<80;i++) {System.out.println(adorno);}
         nOfSpaces = Math.floor((80 - title.length())/2)
-        for(int i = 0;i<nOfSpaces;i++)
-        {
-            System.out.print(" ");
-        }
+        for(int i = 0;i<nOfSpaces;i++) {System.out.print(" ");}
         System.out.print(title + "\n");
         if useHeader
         {
