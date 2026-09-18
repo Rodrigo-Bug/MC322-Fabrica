@@ -3,7 +3,7 @@ public class Menu
     private String adorno;
     private int nOfSpaces;
 
-    public void customize(String character)
+    public void Menu(String character)
     {
         this.adorno = character;
     }
