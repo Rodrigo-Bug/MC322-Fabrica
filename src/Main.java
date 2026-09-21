@@ -17,19 +17,7 @@ public class Main {
 
 
         //declaração de produtos
-        Produto Cabecote3200A = new Cabecote("SJ3201A", "Cabecote 3200 Tipo A", 10, 0.8);
-        //SJ - Aplicacao (Uniao rotativa), 320 - Tamanho da uniao, 1A - Tipo de peca (Cabecote tipo A)
-        Produto Cabecote4550A = new Cabecote("SJ4551A", "Cabecote 4550 Tipo A", 13, 0.8);
-        Produto Cabecote3200B = new Cabecote("SJ3201B", "Cabecote 3200 Tipo B", 15, 0.8);
-        Produto Cabecote4550B = new Cabecote("SJ4551B", "Cabecote 4550 Tipo B", 18, 0.8);
-        Produto Corpo3200 = new Corpo("SJ3202", "Corpo 3200", 30, 0.3);
-        Produto Corpo4550 = new Corpo("SJ4552", "Corpo 4550", 40, 0.3);
-        Produto TuboConector3200 = new TuboConector("SJ3203", "Tubo Conector 3200", 10, 0.6);
-        Produto TuboConector3200R = new TuboConector("SJ3203R", "Tubo Conector 3200 revestido", 10, 0.8);
-        Produto TuboConector4550 = new TuboConector("SJ4553", "Tubo Conector 4550", 15, 0.6);
-        Produto TuboConector4550R = new TuboConector("SJ4553R", "Tubo Conector 4550 revestido", 15, 0.8);
-        Produto[] produtos = { Cabecote3200A, Cabecote4550A, Cabecote3200B, Cabecote4550B, Corpo3200, Corpo4550,
-                            TuboConector3200, TuboConector3200R, TuboConector4550, TuboConector4550R };
+
 
         //declaração de maquina
         Maquina torno = new Maquina("Torno", 50);
