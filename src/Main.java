@@ -75,6 +75,25 @@ menu:   switch(op)
             case 4:
                 System.out.print("Selecione o tipo de cabecote desejado (1-3): ");
                 escolherProduto=teclado.nextInt()-1;
+
+                switch (escolherProduto)
+                {
+                    case 0:
+                        if(Aluminio.getQuantidade()>=Cabecote3200A.getDemandaMateriaPrima())
+                        {
+                            escolherProduto=0;
+                        }
+                        break;
+                    case 1:
+                        escolherProduto=1;
+                        break;
+                    case 2:
+                        escolherProduto=2;
+                        break;
+                    default:
+                        System.out.print("Opcao invalida, voltando ao menu principal.");
+                        break menu;
+                }
                 break;
             case 5:
                 //codeblock

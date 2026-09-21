@@ -8,9 +8,9 @@ public class GerenciadorProducao
     private MateriaPrima materiaPrima;
     private double budget;
 
-    public void registrarDemanda()
+    public void registrarDemanda(Demanda oportunidade)
     {
-        return;
+        demandas.add(oportunidade);
     }
     
     public void atualizarDemanda()

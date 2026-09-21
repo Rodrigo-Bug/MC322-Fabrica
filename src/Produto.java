@@ -1,4 +1,5 @@
-abstract class Produto {
+abstract class Produto implements Auditavel
+{
     protected String id;
     protected String nome;
     protected String status;

@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
-abstract class Maquina {
+abstract class Maquina implements Auditavel
+{
     private String nome;
     private boolean ligada;
     private int capacidadeMaxima;
