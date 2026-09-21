@@ -2,7 +2,7 @@ public class Demanda
 {
     private String tipoProduto;
     private int quantidadeProdutos;
-    private boolean atendida;
+    private EstatusDemanda status;
 
     public void atualizarQuantidade()
     {
@@ -14,7 +14,7 @@ public class Demanda
         this.atendida = true;
     }
 
-    public double calcularMateriaPrimaNecessaria()
+    public double calcularViabilidade()
     {
         return 0;
     }
