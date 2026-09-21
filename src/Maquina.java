@@ -2,12 +2,27 @@ import java.util.Scanner;
 
 abstract class Maquina implements Auditavel
 {
-    private String nome;
-    private boolean ligada;
-    private int capacidadeMaxima;
-    private double probabilidadeFalha;
-    private double custoOperacao;
+    protected String nome;
+    protected int health;
+    protected boolean ligada;
+    protected int capacidadeMaxima;
+    protected double probabilidadeFalha;
+    protected double custoOperacao;
 
+    /*A saúde (health) de cada máquina deve ser um valor entre 0 e 100. A cada uso (ou seja, a cada ciclo de
+fabricação em que a máquina for empregada):
+• A saúde da máquina deve sofrer uma pequena redução aleatória (ex: entre 0 e 3 pontos), simulando
+o desgaste natural;
+
+• A probabilidade de falha durante a produção deve ser inversamente proporcional à saúde atual (má-
+quinas mais saudáveis falham menos);
+
+• Ao atingir saúde 0 (ou um limiar crítico), a máquina deve ser considerada quebrada e não pode mais
+operar até ser reparada (reparo pode ser implementado como método extra, se desejado);
+• O método precisaManutencao() deve retornar true quando a saúde estiver abaixo de um limiar
+configurável (ex: 30).
+Livre para adicionar métodos como reparar(), getSaude(), setSaude(), ou atributos como
+historicoFalhas, conforme a necessidade do projeto. */
     public Maquina(String nome, int capacidadeMaxima) {
         this.nome = nome;
         //this.capacidadeMaxima = capacidadeMaxima;
