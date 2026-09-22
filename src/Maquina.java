@@ -75,14 +75,26 @@ historicoFalhas, conforme a necessidade do projeto. */
             return true;
         }
     }
+
+    //Interfaces
+
+    @Override
+    public String gerarRelatorioDiagnostico(){
+        return String.valueOf(this.health);
+    }
+
+    @Override
+    public boolean precisaDeManutencao(){
+        if(this.health<20){
+            return true;
+        }else{
+            return false;   
+        }  
+
+
 }
 
-//Interfaces
 
-@Override
-public String gerarRelatorioDiagnostico(){
-    return String.valueOf(1);
-}
 
 class MaquinaUsinagem extends Maquina{
     public MaquinaUsinagem(String nome, int capacidadeMaxima, double custoOperacao) {
@@ -205,4 +217,4 @@ class MaquinaInspecao extends Maquina{
         return "Maquina de Tratamento Superficial";
     }    
 
-}
+}}
