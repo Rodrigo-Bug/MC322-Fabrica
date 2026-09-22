@@ -1,3 +1,5 @@
+import Produtos.Produto;
+
 public class EstacaoInspecao {
     private boolean ligada;
     private int produtosInspecionados;

@@ -1,5 +1,9 @@
 import java.util.Scanner;
 
+import Maquinas.Maquina;
+import MateriaPrima.MateriaPrima;
+import Produtos.Produto;
+
 public class Esteira {
     private Object item;
     private boolean emMovimento;

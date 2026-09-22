@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 
+import Maquinas.Maquina;
+import MateriaPrima.MateriaPrima;
+import Produtos.Produto;
+
 public class GerenciadorProducao
 {
     private ArrayList<Demanda> demandas;

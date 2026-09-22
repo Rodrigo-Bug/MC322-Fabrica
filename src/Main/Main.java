@@ -1,5 +1,17 @@
+package Main;
 import java.util.Scanner;
+
+import EstacaoInspecao;
+import Esteira;
+import GerenciadorProducao;
+import Menu;
+import Maquinas.Maquina;
+import MateriaPrima.MateriaPrima;
+
 import java.util.Random;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class Main {
     public static final Random RANDOM = new Random();
@@ -22,7 +34,11 @@ public class Main {
 
 
         //declaração de maquina
-        Maquina torno = new Maquina("Torno", 50);
+        
+        Map<String, Maquina> maquinas = new HashMap<>();
+
+        Maquina torno = new MaquinaUsinagem( "Torno", 50, 10); 
+
 
 
         //declaração de esteira (nome provisorio)

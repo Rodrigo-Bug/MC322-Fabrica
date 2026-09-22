@@ -4,9 +4,8 @@ public class Demanda
     private int quantidadeProdutos;
     private EstatusDemanda status;
 
-    public void atualizarQuantidade()
-    {
-        return;
+    public void atualizarQuantidade(int quantidadeProdutos){
+        this.quantidadeProdutos=quantidadeProdutos;
     }
 
     public void atender()
@@ -14,8 +13,7 @@ public class Demanda
         this.atendida = true;
     }
 
-    public double calcularViabilidade()
-    {
-        return 0;
+    public double calcularMateriaPrimaNecessaria(){
+        return tipoProduto;
     }
 }

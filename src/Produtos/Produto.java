@@ -1,7 +1,8 @@
+package Produtos;
 import Interfaces.Auditavel;
 import Interfaces.Manutencao;
 
-abstract class Produto implements Auditavel, Manutencao{
+public abstract class Produto implements Auditavel, Manutencao{
     protected String id;
     protected String nome;
     protected StatusProduto status;
