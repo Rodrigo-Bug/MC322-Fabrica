@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 abstract class Maquina implements Auditavel
 {
     protected String nome;
@@ -23,60 +21,12 @@ operar até ser reparada (reparo pode ser implementado como método extra, se de
 configurável (ex: 30).
 Livre para adicionar métodos como reparar(), getSaude(), setSaude(), ou atributos como
 historicoFalhas, conforme a necessidade do projeto. */
-    public Maquina(String nome, int capacidadeMaxima) {
-        this.nome = nome;
-        //this.capacidadeMaxima = capacidadeMaxima;
-        this.ligada = false;
-    }
+
 
     //Abstract
-    public int processar(MateriaPrima materiaPrima, Produto obraPrima,double demandaNecessaria) {
-        if (this.ligada) {
-            if(demandaNecessaria%obraPrima.getDemandaMateriaPrima()<0.01){
-                System.out.printf("\n[OK] %s processando %.2f %s de %s...",this.nome, demandaNecessaria, materiaPrima.getUnidade(), materiaPrima.getNome());
-                System.out.printf("\n[OK] Produto %s - %s criado. ", obraPrima.getId(), obraPrima.getNome());
-                materiaPrima.consumir(demandaNecessaria);
-                return (int)(demandaNecessaria/obraPrima.getDemandaMateriaPrima());
-            }else{
-                System.out.printf("\n[NOK] Quantidade insuficiente: o valor enviado não atende ao requisito de produção\n[INFO] Envie múltiplos exatos do custo do produto.\nDeseja adicionar %.2f de materia prima faltante para completar o item? (responder não ira concelar a produção pois ainda não foi implementado o estoque da maquina)\n1 - Sim\n2 - Não\nEscolha: \nFUNÇÃO INACABADA",obraPrima.getDemandaMateriaPrima()-(demandaNecessaria%obraPrima.getDemandaMateriaPrima()));
-                 Scanner teclado = new Scanner(System.in);
-                int escolha = teclado.nextInt();
-                teclado.close();
-                if(escolha==1){
-                     /*if (Aluminio.verificarDisponibilidade(obraPrima.getDemandaMateriaPrima()-(demandaNecessaria%obraPrima.getDemandaMateriaPrima()))) {
-                        if(esteira1.adicionarItem(materiaPrima, obraPrima.getDemandaMateriaPrima()-(demandaNecessaria%obraPrima.getDemandaMateriaPrima()))){
-                            if(esteira1.transportarMaquina(this)){
-                            }
-                        }
-                    }*/
+    public abstract int processar(Produto produto, MateriaPrima materiaPrima, int demanda);
 
-                    return processar(materiaPrima, obraPrima, demandaNecessaria+demandaNecessaria%obraPrima.getDemandaMateriaPrima());
-                    
-                }else{
-                    System.out.printf("\nVoltando ao menu principal.");
-                    return 0;
-                }
-            }
-
-        }else{
-            System.out.printf("\n[NOK] %s esta desligado(a), não pode Processar itens.\nDeseja ligar?\n1 - Ligar\n2 - Sair\nEscolha:  ", this.nome);
-            Scanner teclado = new Scanner(System.in);
-            int escolha = teclado.nextInt();
-            teclado.close();
-            if(escolha==1){
-                ligar();
-                return processar(materiaPrima, obraPrima, demandaNecessaria);
-            }else{
-                System.out.printf("\nVoltando ao menu principal.");
-                return 0;
-            }
-        }
-    }
-
-    public String getTipo()
-    {
-        return "";
-    }
+    public abstract String getTipo();
 
     //Concrete
     public void ligar() {
@@ -89,21 +39,160 @@ historicoFalhas, conforme a necessidade do projeto. */
         System.out.printf("\n[OK] %s desligado(a).",this.nome);
     }
 
-    public String getNome() {
-        return this.nome;
-    }
-
-    public double getCustoOperacao()
-    {
-        return this.custoOperacao;
-    }
-
     public boolean estaLigada() {
         return this.ligada;
     }
 
-    public boolean verificarFalha()
-    {
-        return true;
+    public String getNome() {
+        return this.nome;
     }
+
+    public double getCustoOperacao() {
+        return this.custoOperacao;
+    }
+
+   
+    protected boolean verificarFalha()
+    {
+        if(Main.RANDOM.nextDouble() < this.probabilidadeFalha){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    //retorna true caso a maquina quebre
+    protected boolean dano() {
+        this.probabilidadeFalha+=0.005;
+        if (this.health>1) {
+            this.health--;
+            return false;
+        }else{
+            this.health--;
+            System.out.printf("\n[NOK] %s está quebrada", getNome());
+            return true;
+        }
+    }
+}
+
+class MaquinaUsinagem extends Maquina{
+    public MaquinaUsinagem(String nome, int capacidadeMaxima, double custoOperacao) {
+        this.nome = nome;
+        this.health = 100;
+        this.ligada = false;
+        this.capacidadeMaxima = capacidadeMaxima;
+        this.probabilidadeFalha=0.01;
+        this.custoOperacao=custoOperacao;
+    }
+
+
+    //recebe quantidade do produto a ser fabricado, multiplica pela quantidade de material necessario para pruduzir o produto, verifica estoque e produz
+    @Override
+    public int processar(Produto produto, MateriaPrima materiaPrima, int demanda ){
+        int falhas=0;
+        int qnt=0;
+        System.out.printf("\n[OK] Usinando %s", produto.getNome());
+        
+        for (int i=0; i<demanda; i++){
+            qnt++;
+            if(verificarFalha()){
+                produto.upProbabilidadeFalha();
+                falhas++;
+            }
+            if(dano()){
+                System.out.printf("\n[NOK] Não foi possível usinar %d %s(s)",demanda-qnt, produto.getNome());
+                System.out.printf("\n[OK] Foram usinado(s) %d %s(s)",qnt, produto.getNome());
+                System.out.printf("\n[INFO] %d falha(s) ocorreram durante o processamento de %s.", falhas, produto.getNome());
+                return qnt;
+            }
+
+        }
+        System.out.printf("\n[OK] Foram usinados %d %s(s)",qnt, produto.getNome());
+        System.out.printf("\n[INFO] %d falha(s) ocorreram durante o processamento de %s.", falhas, produto.getNome());
+
+        return qnt;
+    }
+
+    @Override
+    public String getTipo(){
+        return "Maquina de Usinagem";
+    }    
+
+}
+
+class MaquinaTratamentoSuperficial extends Maquina{
+
+    public MaquinaTratamentoSuperficial(String nome, int capacidadeMaxima, double custoOperacao) {
+        this.nome = nome;
+        this.health = 100;
+        this.ligada = false;
+        this.capacidadeMaxima = capacidadeMaxima;
+        this.probabilidadeFalha=0.01;
+        this.custoOperacao=custoOperacao;
+    }
+
+    @Override
+    public int processar(Produto produto, MateriaPrima materiaPrima, int demanda ){
+        int falhas=0;
+        int qnt=0;
+        System.out.printf("\n[OK] Realizando tratamento superficial em %s", produto.getNome());
+        
+        for (int i=0; i<demanda; i++){
+            qnt++;
+            if(verificarFalha()){
+                produto.upProbabilidadeFalha();
+                falhas++;
+            }
+            if(dano()){
+                System.out.printf("\n[NOK] Não foi possível tratar superficialmente %d %s(s)",demanda-qnt, produto.getNome());
+                System.out.printf("\n[OK] Foram tratados superficialmente %d %s(s)",qnt, produto.getNome());
+                System.out.printf("\n[INFO] %d falha(s) ocorreram durante o processamento de %s.", falhas, produto.getNome());
+                return qnt;
+            }
+
+        }
+        System.out.printf("\n[OK] Foram tratados superficialmente %d %s(s)",qnt, produto.getNome());
+        System.out.printf("\n[INFO] %d falha(s) ocorreram durante o processamento de %s.", falhas, produto.getNome());
+
+        return qnt;
+    }
+
+    @Override
+    public String getTipo(){
+        return "Maquina de Tratamento Superficial";
+    }    
+
+}
+
+class MaquinaInspecao extends Maquina{
+    public MaquinaInspecao(String nome, int capacidadeMaxima, double custoOperacao) {
+        this.nome = nome;
+        this.health = 100;
+        this.ligada = false;
+        this.capacidadeMaxima = capacidadeMaxima;
+        this.probabilidadeFalha=0.01;
+        this.custoOperacao=custoOperacao;
+    }
+
+    @Override
+    public int processar(Produto produto, MateriaPrima materiaPrima, int demanda){
+        int falhas=0;
+        System.out.printf("\n[OK] Usinando %s", produto.getNome());
+        
+        for (int i=0; i<demanda; i++){
+            if(verificarFalha()){
+                falhas++;
+            }
+            this.health--;
+        }
+
+        System.out.printf("\n[INFO] %d falha(s) ocorreram durante o processamento de %s.", falhas, produto.getNome());
+
+        return 1;
+    }
+
+    @Override
+    public String getTipo(){
+        return "Maquina de Tratamento Superficial";
+    }    
+
 }
