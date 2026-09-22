@@ -1,3 +1,5 @@
+import Interfaces.Auditavel;
+
 abstract class Produto implements Auditavel
 {
     protected String id;

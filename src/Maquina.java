@@ -1,4 +1,7 @@
-abstract class Maquina implements Auditavel
+import Interfaces.Auditavel;
+import Interfaces.Manutencao;
+
+abstract class Maquina implements Auditavel, Manutencao
 {
     protected String nome;
     protected int health;
@@ -72,6 +75,13 @@ historicoFalhas, conforme a necessidade do projeto. */
             return true;
         }
     }
+}
+
+//Interfaces
+
+@Override
+public String gerarRelatorioDiagnostico(){
+    return String.valueOf(1);
 }
 
 class MaquinaUsinagem extends Maquina{
