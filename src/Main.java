@@ -2,8 +2,9 @@ import java.util.Scanner;
 import java.util.Random;
 
 public class Main {
-        public static final Random RANDOM = new Random();
-        public static void main(String[] args) throws Exception {
+    public static final Random RANDOM = new Random();
+    public static void main(String[] args) throws Exception
+    {
         //declaração de variaveis 
         int op =0;
         int escolherProduto =0;
