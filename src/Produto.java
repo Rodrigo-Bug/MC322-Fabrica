@@ -62,6 +62,32 @@ class Cabecote extends Produto
         this.quantidadeMateriaPrimaNecessaria = quantidadeMateriaPrimaNecessaria;
         this.qualidade = qualidade;
     }
+
+    public int processar(Produto produto, MateriaPrima materiaPrima, int demanda)
+    {
+        int falhas=0;
+        int qnt=0;
+        System.out.printf("\n[OK] Usinando %s", produto.getNome());
+        
+        for (int i=0; i<demanda; i++){
+            qnt++;
+            if(verificarFalha()){
+                produto.upProbabilidadeFalha();
+                falhas++;
+            }
+            if(dano()){
+                System.out.printf("\n [NOK] Não foi possivel usinar %d %s(s)",demanda-qnt, produto.getNome());
+                System.out.printf("\n [OK] Foram usinados %d %s(s)",qnt, produto.getNome());
+                System.out.printf("\n[INFO] %d falha(s) ocorreram durante o processamento de %s.", falhas, produto.getNome());
+                return qnt;
+            }
+
+        }
+        System.out.printf("\n [OK] Foram usinados %d %s(s)",qnt, produto.getNome());
+        System.out.printf("\n[INFO] %d falha(s) ocorreram durante o processamento de %s.", falhas, produto.getNome());
+
+        return qnt;
+    }
 }
 
 class Corpo extends Produto
