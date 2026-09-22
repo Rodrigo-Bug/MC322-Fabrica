@@ -41,10 +41,15 @@ abstract class Produto implements Auditavel
         return status;
     }
 
-    public double getQualidade()
+    public String gerarRelatorioDiagnostico()
     {
-        return qualidade;
-    } 
+        return("Probabilidade de falha do produto de qualidade " + this.qualidade + " está em " this.probabilidadeFalhaAcumulada " atualmente.");
+    }
+
+    public boolean precisaDeManutencao()
+    {
+        if(this.probabilidadeFalhaAcumulada 
+    }
 }
 
 //Usando o nome dos produtos como subclasses, para expandir as opcoes de nomes no main.
