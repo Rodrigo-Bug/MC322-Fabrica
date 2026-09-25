@@ -16,28 +16,19 @@ public class Main {
     public static void main(String[] args) throws Exception
     {
         //declaração de variaveis 
-        int op =0;
-        int escolherProduto =0;
-        int qntProdutos;
-        double demanda;
+
+        //declaracao de objetos
         Scanner teclado = new Scanner(System.in);
         Menu menu = new Menu("=");
-
 
         //declaração de materia prima
         MateriaPrima Aluminio = new MateriaPrima("AL2618", "Alumínio", 100.0, "kg", 10.0);
 
-
         //declaração de produtos
 
-
         //declaração de maquina
-        
         Map<String, Maquina> maquinas = new HashMap<>();
-
         Maquina torno = new MaquinaUsinagem( "Torno", 50, 10); 
-
-
 
         //declaração de esteira (nome provisorio)
         Esteira esteira1 = new Esteira(50);
@@ -46,10 +37,15 @@ public class Main {
         //declaração de estação de inspeção (nome provisorio)
         EstacaoInspecao estacao1 = new EstacaoInspecao();
 
+inicio:
     do {
 
         //mensagem de inicialização
-
+        System.out.print("  Escolha o cenário de simulação:" + "\n"
+                         + "1 CENÁRIO IDEAL" + "\n"
+                         + "2 CENÁRIO CAÓTICO" + "\n"
+                         + "0 PORQUE ESCOLHER UM CENÁRIO?");
+        int escolha = teclado.nextInt();
         menu.GenerateMenuTitle("RL SOLUCOES", true, "\"Movendo o futuro, peça por peça\"");
 
         System.out.println("Bem-vindos à nossa fábrica de unioes rotativas!\nAqui transformamos tecnologia e precisão "
