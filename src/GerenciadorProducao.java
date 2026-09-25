@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
-import Maquinas.Maquina;
-import MateriaPrima.MateriaPrima;
-import Produtos.Produto;
+import PackMaquinas.Maquina;
+import PackMateriaPrima.MateriaPrima;
+import PackProdutos.Produto;
 
 public class GerenciadorProducao
 {

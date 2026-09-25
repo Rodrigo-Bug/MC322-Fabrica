@@ -1,4 +1,4 @@
-import Produtos.Produto;
+import PackProdutos.Produto;
 
 public class EstacaoInspecao {
     private boolean ligada;

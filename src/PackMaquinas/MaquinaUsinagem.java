@@ -1,13 +1,10 @@
-package Maquinas;
+package PackMaquinas;
 
 import MateriaPrima.*;
-import Produtos.*;
+import PackProdutos.*;
 
-
-
-public class MaquinaTratamentoSuperficial extends Maquina{
-
-    public MaquinaTratamentoSuperficial(String nome, int capacidadeMaxima, double custoOperacao) {
+class MaquinaUsinagem extends Maquina{
+    public MaquinaUsinagem(String nome, int capacidadeMaxima, double custoOperacao) {
         this.nome = nome;
         this.health = 100;
         this.ligada = false;
@@ -16,11 +13,13 @@ public class MaquinaTratamentoSuperficial extends Maquina{
         this.custoOperacao=custoOperacao;
     }
 
+
+    //recebe quantidade do produto a ser fabricado, multiplica pela quantidade de material necessario para pruduzir o produto, verifica estoque e produz
     @Override
     public int processar(Produto produto, MateriaPrima materiaPrima, int demanda ){
         int falhas=0;
         int qnt=0;
-        System.out.printf("\n[OK] Realizando tratamento superficial em %s", produto.getNome());
+        System.out.printf("\n[OK] Usinando %s", produto.getNome());
         
         for (int i=0; i<demanda; i++){
             qnt++;
@@ -29,14 +28,14 @@ public class MaquinaTratamentoSuperficial extends Maquina{
                 falhas++;
             }
             if(dano()){
-                System.out.printf("\n[NOK] Não foi possível tratar superficialmente %d %s(s)",demanda-qnt, produto.getNome());
-                System.out.printf("\n[OK] Foram tratados superficialmente %d %s(s)",qnt, produto.getNome());
+                System.out.printf("\n[NOK] Não foi possível usinar %d %s(s)",demanda-qnt, produto.getNome());
+                System.out.printf("\n[OK] Foram usinado(s) %d %s(s)",qnt, produto.getNome());
                 System.out.printf("\n[INFO] %d falha(s) ocorreram durante o processamento de %s.", falhas, produto.getNome());
                 return qnt;
             }
 
         }
-        System.out.printf("\n[OK] Foram tratados superficialmente %d %s(s)",qnt, produto.getNome());
+        System.out.printf("\n[OK] Foram usinados %d %s(s)",qnt, produto.getNome());
         System.out.printf("\n[INFO] %d falha(s) ocorreram durante o processamento de %s.", falhas, produto.getNome());
 
         return qnt;
@@ -44,7 +43,7 @@ public class MaquinaTratamentoSuperficial extends Maquina{
 
     @Override
     public String getTipo(){
-        return "Maquina de Tratamento Superficial";
+        return "Maquina de Usinagem";
     }    
 
 }

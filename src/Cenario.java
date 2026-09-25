@@ -3,4 +3,15 @@ enum Cenario
     IDEAL("Cenário ideal, representa uma simulação onde está tudo dando certo, as máquinas estão bem cuidadas e a verba é abundante. Use este cenário para observar o fluxo da fábrica."),
     CAÓTICO("Cenário caótico, representa uma simulação onde a fábrica está mal cuidada, as máquinas estão sem manutenção e a verba está em falta. Use este cenário para testar a robustez das estratégias implementadas.");
 
-    private Cenario
+    private String descricao;
+
+    private Cenario(String descricao)
+    {
+        this.descricao = descricao;
+    }
+
+    public String getDescription()
+    {
+        return this.descricao;
+    }
+}

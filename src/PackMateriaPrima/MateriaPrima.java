@@ -1,4 +1,5 @@
-package MateriaPrima;
+package PackMateriaPrima;
+
 public class MateriaPrima {
     private String id;
     private String nome;

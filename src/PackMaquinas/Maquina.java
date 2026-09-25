@@ -1,9 +1,9 @@
-package Maquinas;
+package PackMaquinas;
 
-import Interfaces.*;
-import Main.Main;
+import Main;
 import MateriaPrima.*;
-import Produtos.*;
+import PackInterfaces.*;
+import PackProdutos.*;
 
 abstract class Maquina implements Auditavel, Manutencao
 {

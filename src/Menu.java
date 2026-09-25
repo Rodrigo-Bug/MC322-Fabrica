@@ -1,19 +1,12 @@
+
 import java.util.ArrayList;
 
 public class Menu
 {
-    private String adorno;
-    private int nOfSpaces;
-
-    public Menu(String character)
+    public static void GenerateMenuTitle(String title, Boolean useHeader, String header)
     {
-        this.adorno = character;
-    }
-    
-    public void GenerateMenuTitle(String title, Boolean useHeader, String header)
-    {
-        for(int i = 0;i<80;i++) {System.out.println(adorno);}
-        nOfSpaces = (int) Math.floor((80 - title.length())/2);
+        for(int i = 0;i<80;i++) {System.out.println("=");}
+        final int nOfSpaces = (int) Math.floor((80 - title.length())/2);
         for(int i = 0;i<nOfSpaces;i++) {System.out.print(" ");}
         System.out.print(title + "\n");
         if (useHeader)
@@ -26,7 +19,7 @@ public class Menu
             System.out.print(header + "\n");
         }
         System.out.print("\n");
-        System.out.println(adorno);
+        for(int i = 0;i<80;i++) {System.out.println("=");}
         System.out.print("\n");
     }
     

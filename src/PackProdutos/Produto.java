@@ -1,4 +1,4 @@
-package Produtos;
+package PackProdutos;
 import Interfaces.Auditavel;
 import Interfaces.Manutencao;
 

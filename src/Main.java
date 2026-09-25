@@ -1,10 +1,9 @@
-package Main;
 import java.util.Scanner;
 
-import Interfaces.*;
-import Produtos.*;
-import Maquinas.*;
-import MateriaPrima.*;
+import PackInterfaces.*;
+import PackMaquinas.*;
+import PackMateriaPrima.*;
+import PackProdutos.*;
 
 import java.util.Random;
 import java.util.HashMap;
@@ -19,7 +18,6 @@ public class Main {
 
         //declaracao de objetos
         Scanner teclado = new Scanner(System.in);
-        Menu menu = new Menu("=");
 
         //declaração de materia prima
         MateriaPrima Aluminio = new MateriaPrima("AL2618", "Alumínio", 100.0, "kg", 10.0);
@@ -45,8 +43,9 @@ inicio:
                          + "1 CENÁRIO IDEAL" + "\n"
                          + "2 CENÁRIO CAÓTICO" + "\n"
                          + "0 PORQUE ESCOLHER UM CENÁRIO?");
-        int escolha = teclado.nextInt();
-        menu.GenerateMenuTitle("RL SOLUCOES", true, "\"Movendo o futuro, peça por peça\"");
+        Cenario.escolha(teclado.nextInt());
+
+        Menu.GenerateMenuTitle("RL SOLUCOES", true, "\"Movendo o futuro, peça por peça\"");
 
         System.out.println("Bem-vindos à nossa fábrica de unioes rotativas!\nAqui transformamos tecnologia e precisão "
                         + "\nem componentes que garantem segurança, \ndesempenho e durabilidade.\n\n");

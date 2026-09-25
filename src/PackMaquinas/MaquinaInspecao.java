@@ -1,7 +1,7 @@
-package Maquinas;
+package PackMaquinas;
 
 import MateriaPrima.*;
-import Produtos.*;
+import PackProdutos.*;
 
  
  
