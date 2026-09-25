@@ -1,12 +1,10 @@
 package Main;
 import java.util.Scanner;
 
-import EstacaoInspecao;
-import Esteira;
-import GerenciadorProducao;
-import Menu;
-import Maquinas.Maquina;
-import MateriaPrima.MateriaPrima;
+import Interfaces.*;
+import Produtos.*;
+import Maquinas.*;
+import MateriaPrima.*;
 
 import java.util.Random;
 import java.util.HashMap;
