@@ -1,3 +1,4 @@
+package main;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -5,6 +6,7 @@ import PackInterfaces.*;
 import PackMaquinas.*;
 import PackMateriaPrima.*;
 import PackProdutos.*;
+import outros.*;
 import Estrategias.*;
 import Estrategias.Demandas.*;
 

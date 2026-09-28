@@ -1,5 +1,7 @@
 package PackProdutos;
 import PackInterfaces.*;
+import PackMaquinas.*;
+import java.util.ArrayList;
 
 public abstract class Produto implements Auditavel, Manutencao
 {
@@ -9,9 +11,10 @@ public abstract class Produto implements Auditavel, Manutencao
     protected double quantidadeMateriaPrimaNecessaria;
     protected double qualidade;
     protected double probabilidadeFalhaAcumulada;
+    protected ArrayList<Maquina> processoProducao;
     protected double tempoUsinagem;
     protected double tempoTratamentoSuperficial;
-    static protected int totalProdutosFabricados; //VERIFICAR SE É PRA SER STATIC!!!
+    protected int totalProdutosFabricados; //VERIFICAR SE É PRA SER STATIC!!!
 
      //Abstract
     public abstract void processar(StatusProduto proxStatus);
@@ -30,6 +33,10 @@ public abstract class Produto implements Auditavel, Manutencao
     public StatusProduto getStatus() {
         return status;
     }
+
+    public void setStatus(StatusProduto status) {
+        this.status = status;
+    }
     
     public double getDemandaMateriaPrima() {
         return quantidadeMateriaPrimaNecessaria;
@@ -42,6 +49,10 @@ public abstract class Produto implements Auditavel, Manutencao
 
     public double getQualidade(){
         return this.qualidade;
+    }
+
+    public ArrayList<Maquina> getProcessoProducao(){
+        return this.processoProducao;
     }
 
 

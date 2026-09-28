@@ -1,10 +1,11 @@
+package outros;
 import java.util.ArrayList;
 
-import Estrategias.EstrategiaProducao;
+import Estrategias.*;
 import Estrategias.Demandas.*;
 import PackMaquinas.*;
-import PackMateriaPrima.MateriaPrima;
-import PackProdutos.Produto;
+import PackMateriaPrima.*;
+import PackProdutos.*;
 
 public class GerenciadorProducao
 {
@@ -33,7 +34,7 @@ public class GerenciadorProducao
         return this.estrategiaAtual;
     }
     
-    public void registrarDemanda(String tipoProduto, int quantidadeProdutos)
+    public void registrarDemanda(Produto tipoProduto, int quantidadeProdutos)
     {
         idDemanda++;
         Demanda oportunidade = new Demanda(idDemanda, tipoProduto, quantidadeProdutos);
@@ -60,7 +61,7 @@ public class GerenciadorProducao
         return;
     }
 
-    public void executarProximaProducao()
+    public void fabricarDemanda()
     {
         
         return;
@@ -71,24 +72,36 @@ public class GerenciadorProducao
         //Percorre coleções de objetos que implementam Auditavel e exibe um relatório consolidado da planta;
     }
 
-    public void comprarMateriaPrima()
+    public void comprarMateriaPrima(MateriaPrima materia, int qnt)
     {
-        return;
+        this.budget=this.budget-qnt*materia.getCusto();
+        materiaPrima.adicionarEstoque(qnt);
     }
 
     public double exibirBudget()
     {
-        return 0.0;
+        return budget;
     }
 
     public void exibirArmazem()
     {
+
+        for (Produto produto : produtosFabricados) {
+            System.out.printf("[INFO] Produto: %s, Quantidade: %d, Qualidade: %0.2f",);
+        }
+
         //Lista todos os produtos acabados em estoque, com quantidade, qualidade e lote.
-        return;
+   
     }
 
-    private void calcularCustoProducao()
+    private double calcularCustoProducao(ArrayList<Demanda> demanda, int id, int qnt)
     {
-        return;
+        double custo=0;
+        ArrayList <Maquina> maquinas = demanda.get(id).getProduto().getProcessoProducao();
+        for (Maquina maquina : maquinas) {
+            custo+=maquina.getCustoOperacao();
+        }
+        return  custo*qnt;
+    
     }
 }

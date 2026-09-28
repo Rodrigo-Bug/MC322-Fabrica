@@ -1,12 +1,15 @@
 package Estrategias.Demandas;
+
+import PackProdutos.*;
+
 public class Demanda
 {
     private int id;
-    private String tipoProduto;
+    private Produto tipoProduto;
     private int quantidadeProdutos;
     private EstatusDemanda status;
 
-    public Demanda(int id, String tipoProduto, int quantidadeProdutos)
+    public Demanda(int id, Produto tipoProduto, int quantidadeProdutos)
     {
         this.id = id;
         this.tipoProduto = tipoProduto;
@@ -22,13 +25,17 @@ public class Demanda
         return id + "\tProduto: " + tipoProduto + "\tQuantidade: " + quantidadeProdutos + "\tStatus: " + status;
     }
 
-    public void atender()
+    public void atender(EstatusDemanda demanda)
     {
-        this.status = EstatusDemanda.CONCLUIDA;
+        this.status = demanda;
     }
 
     public double calcularMateriaPrimaNecessaria()
     {
-        return 0.0;
+        return this.quantidadeProdutos*this.tipoProduto.getDemandaMateriaPrima();
+    }
+
+    public Produto getProduto(){
+        return tipoProduto;
     }
 }

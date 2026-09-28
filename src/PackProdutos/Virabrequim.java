@@ -1,17 +1,21 @@
 package PackProdutos;
 
+import java.util.ArrayList;
+
+import PackMaquinas.Maquina;
+
 public class Virabrequim extends Produto
 {
-    public Virabrequim(String id, String nome, double quantidadeMateriaPrimaNecessaria, double qualidade,double tempoUsinagem,double tempoTratamentoSuperficial){
+    public Virabrequim(String id, String nome, double quantidadeMateriaPrimaNecessaria, double qualidade,ArrayList<Maquina> processoProducao,double tempoUsinagem,double tempoTratamentoSuperficial){
         this.id = id;
         this.nome = nome;
-        this.status = StatusProduto.FUNDIDO;
         this.quantidadeMateriaPrimaNecessaria = quantidadeMateriaPrimaNecessaria;
         this.qualidade = qualidade;
         this.probabilidadeFalhaAcumulada=0;
+        this.processoProducao=processoProducao;
         this.tempoUsinagem=tempoUsinagem;
         this.tempoTratamentoSuperficial=tempoTratamentoSuperficial;
-        //this.totalProdutosFabricados=0;
+        this.totalProdutosFabricados=0;
     }
 
     @Override
@@ -41,6 +45,7 @@ public class Virabrequim extends Produto
 
         case FINALIZADO:
             this.status=StatusProduto.FINALIZADO;
+            this.totalProdutosFabricados++;
             break;
         
         default:

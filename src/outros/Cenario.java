@@ -1,3 +1,4 @@
+package outros;
 enum Cenario
 {
     IDEAL,/*("Cenário ideal, representa uma simulação onde está tudo dando certo, as máquinas estão bem cuidadas e a verba é abundante. Use este cenário para observar o fluxo da fábrica."*/
@@ -19,3 +20,4 @@ enum Cenario
                 break;
         }
     }
+}

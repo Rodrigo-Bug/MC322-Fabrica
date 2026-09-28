@@ -3,6 +3,7 @@ package PackMaquinas;
 import PackMateriaPrima.*;
 import PackInterfaces.*;
 import PackProdutos.*;
+import main.*;
 
 public abstract class Maquina implements Auditavel, Manutencao
 {
