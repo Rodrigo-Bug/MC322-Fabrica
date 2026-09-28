@@ -1,11 +1,10 @@
 package PackMaquinas;
 
-import Main;
-import MateriaPrima.*;
+import PackMateriaPrima.*;
 import PackInterfaces.*;
 import PackProdutos.*;
 
-abstract class Maquina implements Auditavel, Manutencao
+public abstract class Maquina implements Auditavel, Manutencao
 {
     protected String nome;
     protected int health;

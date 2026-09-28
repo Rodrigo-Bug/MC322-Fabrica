@@ -1,9 +1,12 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import PackInterfaces.*;
 import PackMaquinas.*;
 import PackMateriaPrima.*;
 import PackProdutos.*;
+import Estrategias.*;
+import Estrategias.Demandas.*;
 
 import java.util.Random;
 import java.util.HashMap;
@@ -15,9 +18,10 @@ public class Main {
     public static void main(String[] args) throws Exception
     {
         //declaração de variaveis 
-
+        int op;
         //declaracao de objetos
         Scanner teclado = new Scanner(System.in);
+        GerenciadorProducao CEO;
 
         //declaração de materia prima
         MateriaPrima Aluminio = new MateriaPrima("AL2618", "Alumínio", 100.0, "kg", 10.0);
@@ -35,80 +39,269 @@ public class Main {
         //declaração de estação de inspeção (nome provisorio)
         EstacaoInspecao estacao1 = new EstacaoInspecao();
 
-inicio:
-    do {
+    do
+    {
 
         //mensagem de inicialização
         System.out.print("  Escolha o cenário de simulação:" + "\n"
                          + "1 CENÁRIO IDEAL" + "\n"
                          + "2 CENÁRIO CAÓTICO" + "\n"
                          + "0 PORQUE ESCOLHER UM CENÁRIO?");
-        Cenario.escolha(teclado.nextInt());
+        CEO = Cenario.escolha(teclado.nextInt());
 
-        Menu.GenerateMenuTitle("RL SOLUCOES", true, "\"Movendo o futuro, peça por peça\"");
+        Terminal.generateMenuTitle("RL SOLUCOES", true, "\"Movendo o futuro, peça por peça\"");
 
-        System.out.println("Bem-vindos à nossa fábrica de unioes rotativas!\nAqui transformamos tecnologia e precisão "
+        System.out.println("Bem-vindos à nossa fábrica de motores!\nAqui transformamos tecnologia e precisão "
                         + "\nem componentes que garantem segurança, \ndesempenho e durabilidade.\n\n");
 
-        menu.GenerateMenuTitle("MENU PRINCIPAL", false, "");
-        System.out.print("\n  BUDGET ATUAL:  " + GerenciadorProducao.getBudget() + "\n\n\n");
-        System.out.print("  ATUALIZAR DEMANDAS\n\n1 - Atualizar demanda de cabecote\n2 - Atualizar demanda de corpo\n"
-                        + "3 - Atualizar demanda de tubo conector\n\n\n");
-        System.out.print("  INICIAR PRODUCAO\n\n4 - Fabricar cabecote\n5 - Fabricar corpo\n6 - Fabricar tubo conector"
-                        + "\n\n\n");
-        System.out.print("  CONSULTAS\n\n7 - Consultar estoque\n8 - Consultar materia-prima\n\n\n");
-        System.out.print("  COMPRAS\n\n9 - Comprar materia-prima\n\n\n\n0 - SAIR\n\n\n");
-        op = teclado.nextInt();
+        Terminal.generateMenuTitle("MENU PRINCIPAL", false, "");
         
-menu:   switch(op)
-        {
-            case 1:
-                //codeblock
-                break;
-            case 2:
-                //codeblock
-                break;
-            case 3:
-                //codeblock
-                break;
-            case 4:
-                System.out.print("Selecione o tipo de cabecote desejado (1-3): ");
-                escolherProduto=teclado.nextInt()-1;
+        Terminal.generateInfo(false, null, new ArrayList<String>() {{
+            add("ESTRATEGIA ATUAL:  " + CEO.getEstrategia().getNomeEstrategia());
+            add("BUDGET:  " + CEO.getBudget());
+        }});
 
-                switch (escolherProduto)
+        Terminal.generateMenu("Selecione o módulo que deseja acessar:", 1, new ArrayList<String>() {{
+            add("Modulo Comercial");
+            add("Modulo Fabrica");
+            add("Modulo Estoque");
+            add("Modulo Compras");
+            add("Configuracoes");
+        }});
+        
+        op = teclado.nextInt();
+
+menu:
+        switch(op)
+        {
+        case 1:
+            do
+            {
+                Terminal.generateMenuTitle("COMERCIAL", false, "");
+                Terminal.generateMenu("Selecione a acao desejada:", 1, new ArrayList<String>() {{
+                    add("Atualizar Demandas");
+                    add("Consultar historico de demandas");
+                }});
+                op = teclado.nextInt();
+
+                switch(op)
                 {
-                    case 0:
-                        if(Aluminio.getQuantidade()>=Cabecote3200A.getDemandaMateriaPrima())
-                        {
-                            escolherProduto=0;
-                        }
-                        break;
                     case 1:
-                        escolherProduto=1;
+                        do
+                        {
+                            Terminal.generateMenu("Atualizar Demandas", 1, new ArrayList<String>() {{
+                                add("Demanda de cabecote");
+                                add("Demanda de virabrequim");
+                                add("Demanda de pistao");
+                                add("Demanda de bloco");
+                                add("Demanda de motor completo");
+                            }});
+                            op = teclado.nextInt();
+                            System.out.print("Informe a quantidade de demanda: ");
+                            int qnt = teclado.nextInt();
+
+                            switch(op)
+                            {
+                                case 1:
+                                    CEO.registrarDemanda("Cabecote", qnt);
+                                    System.out.printf("\n[OK] Demanda de " + qnt
+                                    + " cabecotes registrada com sucesso.");
+                                    break;
+                                case 2:
+                                    CEO.registrarDemanda("Virabrequim", qnt);
+                                    System.out.printf("\n[OK] Demanda de " + qnt
+                                    + " virabrequins registrada com sucesso.");
+                                    break;
+                                case 3:
+                                    CEO.registrarDemanda("Pistao", qnt);
+                                    System.out.printf("\n[OK] Demanda de " + qnt
+                                    + " pistoes registrada com sucesso.");
+                                    break;
+                                case 4:
+                                    CEO.registrarDemanda("Bloco", qnt);
+                                    System.out.printf("\n[OK] Demanda de " + qnt
+                                    + " blocos registrada com sucesso.");
+                                    break;
+                                case 5:
+                                    CEO.registrarDemanda("Motor Completo", qnt);
+                                    System.out.printf("\n[OK] Demanda de " + qnt
+                                    + " motores completos registrada com sucesso.");
+                                    break;
+                                case 0:
+                                    break;
+                                default:
+                                    System.out.print("[ERROR] Falha no registro da demanda" + "\n"
+                                    +  "Por favor tente novamente" + "\n");
+                                    break;
+                            }
+                        } while(op != 0);
                         break;
                     case 2:
-                        escolherProduto=2;
+                        Terminal.generateInfo(true, "Gerando relatorio. . .", new ArrayList<String>() {{
+                            add("Relatorio de demandas registradas:");
+                            for (Demanda demanda : CEO.getDemandas()) {
+                                add(demanda.getDemanda());
+                            }
+                        }});
+                        break;
+                    case 0:
                         break;
                     default:
                         System.out.print("Opcao invalida, voltando ao menu principal.");
                         break menu;
                 }
-                break;
-            case 5:
-                //codeblock
-                break;
-            case 6:
-                //codeblock
-                break;
-            case 7:
-                //codeblock
-                break;
-            case 8:
-                //codeblock
-                break;
-            case 9:
-                //codeblock
-                break;
+            } while(op != 0);
+            break;
+            
+        case 2:
+            do
+            {
+                Terminal.generateMenuTitle("FABRICA", false, "");
+                Terminal.generateInfo(true, "Condicao de materia-prima", new ArrayList<String>() {{
+                    add("Quantidade de " + Aluminio.getNome() + " disponivel: " + Aluminio.getQuantidade() + " " + 
+                    Aluminio.getUnidade());
+                }});
+                Terminal.generateMenu("Selecione o produto desejado:", 1, new ArrayList<String>() {{
+                    add("Fabricar cabecote");
+                    add("Fabricar virabrequim");
+                    add("Fabricar pistao");
+                    add("Fabricar bloco");
+                    add("Fabricar demanda");
+                }});
+                op = teclado.nextInt();
+
+                switch(op)
+                {
+                    case 1:
+                        System.out.println("[OK] Cabecote selecionado para producao. . .");
+                        System.out.println("Iniciar producao de imediato? (1 - SIM / 2 - NAO)");
+                        op = teclado.nextInt();
+                        if (op == 1)
+                        {
+                            CEO.registrarDemanda("Cabecote", 1);
+                            CEO.setEstrategia(new EstrategiaUrgente());
+                            System.out.println("[OK] Producao urgente iniciada");
+                            CEO.executarProximaProducao();
+                            CEO.resetEstrategia();
+                        }
+                        break;
+                    case 2:
+                        //codeblock
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        System.out.print("Opcao invalida, voltando ao menu principal.");
+                        break menu;
+                }
+            } while(op != 0);
+            break;
+        case 3:
+            do
+            {
+                Terminal.generateMenuTitle("ESTOQUE", false, "");
+                Terminal.generateMenu("Selecione a acao desejada:", 1, new ArrayList<String>() {{
+                    add("Atualizar Demandas");
+                    add("Visualizar Relatorios");
+                }});
+                op = teclado.nextInt();
+
+                switch(op)
+                {
+                    case 1:
+                        //codeblock
+                        break;
+                    case 2:
+                        //codeblock
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        System.out.print("Opcao invalida, voltando ao menu principal.");
+                        break menu;
+                }
+            } while(op != 0);
+            break;
+        case 4:
+            do
+            {
+                Terminal.generateMenuTitle("COMPRAS", false, "");
+                Terminal.generateMenu("Selecione a acao desejada:", 1, new ArrayList<String>() {{
+                    add("Atualizar Demandas");
+                    add("Visualizar Relatorios");
+                }});
+                op = teclado.nextInt();
+
+                switch(op)
+                {
+                    case 1:
+                        do
+                        {
+                            Terminal.generateMenuTitle("FABRICA", false, "");
+                            Terminal.generateMenu("Selecione a acao desejada:", 1, new ArrayList<String>() {{
+                                add("Atualizar Demandas");
+                                add("Visualizar Relatorios");
+                            }});
+                            op = teclado.nextInt();
+
+                            switch(op)
+                            {
+                                case 1:
+                                    //codeblock
+                                    break;
+                                case 2:
+                                    //codeblock
+                                    break;
+                                case 0:
+                                    break;
+                                default:
+                                    System.out.print("Opcao invalida, voltando ao menu principal.");
+                                    break menu;
+                            }
+                        } while(op != 0);
+                        break;
+                    case 2:
+                        //codeblock
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        System.out.print("Opcao invalida, voltando ao menu principal.");
+                        break menu;
+                }
+            } while(op != 0);
+            break;
+        case 5:
+            do
+            {
+                Terminal.generateMenuTitle("Configuracoes", false, "");
+                Terminal.generateMenu("Selecione a acao desejada:", 1, new ArrayList<String>() {{
+                    add("Atualizar Demandas");
+                    add("Visualizar Relatorios");
+                }});
+                op = teclado.nextInt();
+
+                switch(op)
+                {
+                    case 1:
+                        //codeblock
+                        break;
+                    case 2:
+                        //codeblock
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        System.out.print("Opcao invalida, voltando ao menu principal.");
+                        break menu;
+                }
+            } while(op != 0);
+            break;
+        case 0:
+            break;
+        default:
+            System.out.print("Opcao invalida, voltando ao menu principal. . .");
+            break;
         }
 
         if (op == 2){
@@ -156,9 +349,5 @@ menu:   switch(op)
     } while (op != 0);
     teclado.close();
     System.out.printf("Saindo...");
-    esteira1.desligar();
-    esteira2.desligar();
-    torno.desligar();
-    estacao1.desligar();
     }
 }

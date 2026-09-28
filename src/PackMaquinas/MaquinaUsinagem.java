@@ -1,6 +1,6 @@
 package PackMaquinas;
 
-import MateriaPrima.*;
+import PackMateriaPrima.*;
 import PackProdutos.*;
 
 class MaquinaUsinagem extends Maquina{
@@ -35,6 +35,7 @@ class MaquinaUsinagem extends Maquina{
             }
 
         }
+        produto.processar(StatusProduto.USINADO);
         System.out.printf("\n[OK] Foram usinados %d %s(s)",qnt, produto.getNome());
         System.out.printf("\n[INFO] %d falha(s) ocorreram durante o processamento de %s.", falhas, produto.getNome());
 

@@ -1,3 +1,4 @@
+package Estrategias.Demandas;
 enum EstatusDemanda
 {
     PENDENTE("Demanda cadastrada, aguardando processamento"),
