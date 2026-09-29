@@ -1,55 +1,22 @@
 package PackProdutos;
 
 import java.util.ArrayList;
-
 import PackMaquinas.Maquina;
 
-public class Bloco extends Produto
-{
-    public Bloco(String id, String nome, double quantidadeMateriaPrimaNecessaria, double qualidade,ArrayList<Maquina> processoProducao,double tempoUsinagem,double tempoTratamentoSuperficial){
-        this.id = id;
-        this.nome = nome;
-        this.quantidadeMateriaPrimaNecessaria = quantidadeMateriaPrimaNecessaria;
-        this.qualidade = qualidade;
-        this.probabilidadeFalhaAcumulada=0;
-        this.processoProducao=processoProducao;
-        this.tempoUsinagem=tempoUsinagem;
-        this.tempoTratamentoSuperficial=tempoTratamentoSuperficial;
-        this.totalProdutosFabricados=0;
+public class Bloco extends Produto {
+    public Bloco(String id, String nome, double materiaPrima, double qualidade, ArrayList<Maquina> processo, double tempoUsinagem, double tempoTratamento) {
+        this.id=id; this.nome=nome; this.quantidadeMateriaPrimaNecessaria=materiaPrima; this.qualidade=qualidade;
+        this.processoProducao=processo; this.tempoUsinagem=tempoUsinagem; this.tempoTratamentoSuperficial=tempoTratamento;
     }
-
-    @Override
-    public double calcularTempoProducao(int demanda){
-        return  demanda*(this.tempoUsinagem+this.tempoTratamentoSuperficial);
+    @Override public double calcularTempoProducao(int demanda) { return demanda*(tempoUsinagem+tempoTratamentoSuperficial); }
+    @Override public String getTipo() { return "Bloco"; }
+    @Override public void processar(StatusProduto proxStatus) {
+        this.status=proxStatus;
+        if (proxStatus == StatusProduto.FINALIZADO) incrementarTotalProdutosFabricados();
     }
-
-    @Override
-    public String getTipo(){
-        return "Bloco";
-    }
-
-    @Override
-    public void processar(StatusProduto proxStatus){
-        switch (proxStatus) {
-        case USINADO:
-            this.status=StatusProduto.USINADO;
-            break;
-
-        case TRATADO_SUPERFICIALMENTE:
-            this.status=StatusProduto.TRATADO_SUPERFICIALMENTE;
-            break;
-
-        case INSPECIONADO:
-            this.status=StatusProduto.INSPECIONADO;
-            break;
-
-        case FINALIZADO:
-            this.status=StatusProduto.FINALIZADO;
-            this.totalProdutosFabricados++;
-            break;
-        
-        default:
-            break;
-        }
+    @Override public Produto criarNovaUnidade(String novoId, int lote) {
+        Bloco p = new Bloco(novoId, nome, quantidadeMateriaPrimaNecessaria, qualidade, processoProducao, tempoUsinagem, tempoTratamentoSuperficial);
+        p.setLote(lote);
+        return p;
     }
 }

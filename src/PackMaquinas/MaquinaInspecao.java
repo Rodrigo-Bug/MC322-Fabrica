@@ -1,40 +1,31 @@
 package PackMaquinas;
 
-import PackMateriaPrima.*;
-import PackProdutos.*;
+import PackMateriaPrima.MateriaPrima;
+import PackProdutos.Produto;
+import PackProdutos.StatusProduto;
+import outros.Cenario;
 
- 
- 
-public class MaquinaInspecao extends Maquina{   
-   public MaquinaInspecao(String nome, int capacidadeMaxima, double custoOperacao) {
-        this.nome = nome;
-        this.health = 100;
-        this.ligada = false;
-        this.capacidadeMaxima = capacidadeMaxima;
-        this.probabilidadeFalha=0.01;
-        this.custoOperacao=custoOperacao;
+public class MaquinaInspecao extends Maquina {
+    public MaquinaInspecao(String nome, int capacidadeMaxima, double custoOperacao, Cenario cenario) {
+        super(nome, capacidadeMaxima, 0.03, custoOperacao, cenario);
     }
 
     @Override
-    public int processar(Produto produto, MateriaPrima materiaPrima, int demanda){
-        int falhas=0;
-        System.out.printf("\n[OK] Usinando %s", produto.getNome());
-        
-        for (int i=0; i<demanda; i++){
-            if(verificarFalha()){
-                falhas++;
-            }
-            this.health--;
+    public int processar(Produto produto, MateriaPrima materiaPrima, int quantidade) {
+        if (!estaLigada() || !podeOperar()) return 0;
+        int alvo = limitarQuantidade(quantidade);
+        int aprovados = 0;
+        for (int i = 0; i < alvo && podeOperar(); i++) {
+            aplicarDesgaste();
+            boolean maquinaFalhou = verificarFalha();
+            // Regra da Tarefa 2: qualidade maior implica criterio de inspecao mais rigoroso.
+            double chanceRejeicao = Math.min(0.95,
+                    (produto.getQualidade() * 0.05 + produto.getProbabilidadeFalhaAcumulada()) * getMultiplicadorFalhaCenario());
+            if (!maquinaFalhou && random.nextDouble() >= chanceRejeicao) aprovados++;
         }
-
-        System.out.printf("\n[INFO] %d falha(s) ocorreram durante o processamento de %s.", falhas, produto.getNome());
-
-        return 1;
+        if (aprovados > 0) produto.processar(StatusProduto.INSPECIONADO);
+        return aprovados;
     }
 
-    @Override
-    public String getTipo(){
-        return "Maquina de Tratamento Superficial";
-    }    
-
+    @Override public String getTipo() { return "Inspecao"; }
 }

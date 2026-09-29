@@ -8,49 +8,14 @@ public class MateriaPrima {
     private double custoPorUnidade;
 
     public MateriaPrima(String id, String nome, double quantidade, String unidade, double custoPorUnidade) {
-        this.id = id;
-        this.nome = nome;
-        this.quantidade = quantidade;
-        this.unidade = unidade;
-        this.custoPorUnidade=custoPorUnidade;
+        this.id=id; this.nome=nome; this.quantidade=quantidade; this.unidade=unidade; this.custoPorUnidade=custoPorUnidade;
     }
-
-    public void consumir(double quantidadeDemandada) {
-        this.quantidade -= quantidadeDemandada;
-    }
-
-    public void adicionarEstoque(double quantidadeAdicional) {
-        this.quantidade += quantidadeAdicional;
-    }
-
-    public boolean verificarDisponibilidade(double quantidadeDemandada) {
-        System.out.print("\n[OK] Verificando disponibilidade de Alumínio");
-        if(this.quantidade >= quantidadeDemandada){
-            System.out.printf("\n[OK] Demanda de %.2f kg pode ser atendida.", quantidadeDemandada);
-        }else{
-            System.out.printf("\n[NOK] Demanda de %.2f kg não pode ser atendida.\nVoltando ao menu principal", quantidadeDemandada);
-        }
-        return this.quantidade >= quantidadeDemandada;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public double getQuantidade() {
-        return quantidade;
-    }
-
-    public String getUnidade() {
-        return unidade;
-    }
-    
-    public double getCusto() {
-        return custoPorUnidade;
-    }
+    public boolean consumir(double q) { if (!verificarDisponibilidade(q) || q < 0) return false; quantidade -= q; return true; }
+    public void adicionarEstoque(double q) { if (q > 0) quantidade += q; }
+    public boolean verificarDisponibilidade(double q) { return q >= 0 && quantidade >= q; }
+    public String getId() { return id; }
+    public String getNome() { return nome; }
+    public double getQuantidade() { return quantidade; }
+    public String getUnidade() { return unidade; }
+    public double getCusto() { return custoPorUnidade; }
 }
-

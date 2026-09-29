@@ -1,23 +1,27 @@
 package outros;
-enum Cenario
-{
-    IDEAL,/*("Cenário ideal, representa uma simulação onde está tudo dando certo, as máquinas estão bem cuidadas e a verba é abundante. Use este cenário para observar o fluxo da fábrica."*/
-    CAÓTICO;/*"Cenário caótico, representa uma simulação onde a fábrica está mal cuidada, as máquinas estão sem manutenção e a verba está em falta. Use este cenário para testar a robustez das estratégias implementadas."*/
 
-    public static GerenciadorProducao escolha(int chc)
-    {
-        switch(chc)
-        {
-            case 1:
-                GerenciadorProducao ideal = new GerenciadorProducao();
-                System.out.println("Cenário ideal selecionado.");
-                break;
-            case 2:
-                System.out.println("Cenário caótico selecionado.");
-                break;
-            default:
-                System.out.println("Nenhum cenário selecionado.");
-                break;
-        }
+public enum Cenario {
+    IDEAL("Ideal", 10000.0, 0.55, 0.55),
+    APOCALIPTICO("Apocaliptico", 1500.0, 2.20, 2.40);
+
+    private final String descricao;
+    private final double budgetInicial;
+    private final double multiplicadorFalha;
+    private final double multiplicadorDesgaste;
+
+    Cenario(String descricao, double budgetInicial, double multiplicadorFalha, double multiplicadorDesgaste) {
+        this.descricao = descricao;
+        this.budgetInicial = budgetInicial;
+        this.multiplicadorFalha = multiplicadorFalha;
+        this.multiplicadorDesgaste = multiplicadorDesgaste;
+    }
+
+    public String getDescricao() { return descricao; }
+    public double getBudgetInicial() { return budgetInicial; }
+    public double getMultiplicadorFalha() { return multiplicadorFalha; }
+    public double getMultiplicadorDesgaste() { return multiplicadorDesgaste; }
+
+    public static Cenario escolha(int opcao) {
+        return opcao == 2 ? APOCALIPTICO : IDEAL;
     }
 }

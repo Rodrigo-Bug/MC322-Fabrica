@@ -1,98 +1,75 @@
 package PackMaquinas;
 
-import PackMateriaPrima.*;
-import PackInterfaces.*;
-import PackProdutos.*;
-import main.*;
+import java.util.Random;
+import PackInterfaces.Auditavel;
+import PackMateriaPrima.MateriaPrima;
+import PackProdutos.Produto;
+import outros.Cenario;
 
-public abstract class Maquina implements Auditavel, Manutencao
-{
-    protected String nome;
-    protected int health;
-    protected boolean ligada;
-    protected int capacidadeMaxima;
-    protected double probabilidadeFalha;
-    protected double custoOperacao;
+public abstract class Maquina implements Auditavel {
+    private String nome;
+    private double health;
+    private boolean ligada;
+    private int capacidadeMaxima;
+    private double probabilidadeFalha;
+    private double custoOperacao;
+    private double multiplicadorFalha;
+    private double multiplicadorDesgaste;
+    protected final Random random = new Random();
 
-    /*A saúde (health) de cada máquina deve ser um valor entre 0 e 100. A cada uso (ou seja, a cada ciclo de
-fabricação em que a máquina for empregada):
-• A saúde da máquina deve sofrer uma pequena redução aleatória (ex: entre 0 e 3 pontos), simulando
-o desgaste natural;
+    protected Maquina(String nome, int capacidadeMaxima, double probabilidadeFalha,
+                      double custoOperacao, Cenario cenario) {
+        this.nome = nome;
+        this.health = 100.0;
+        this.ligada = false;
+        this.capacidadeMaxima = capacidadeMaxima;
+        this.probabilidadeFalha = probabilidadeFalha;
+        this.custoOperacao = custoOperacao;
+        configurarCenario(cenario);
+    }
 
-• A probabilidade de falha durante a produção deve ser inversamente proporcional à saúde atual (má-
-quinas mais saudáveis falham menos);
-
-• Ao atingir saúde 0 (ou um limiar crítico), a máquina deve ser considerada quebrada e não pode mais
-operar até ser reparada (reparo pode ser implementado como método extra, se desejado);
-• O método precisaManutencao() deve retornar true quando a saúde estiver abaixo de um limiar
-configurável (ex: 30).
-Livre para adicionar métodos como reparar(), getSaude(), setSaude(), ou atributos como
-historicoFalhas, conforme a necessidade do projeto. */
-
-
-    //Abstract
-    public abstract int processar(Produto produto, MateriaPrima materiaPrima, int demanda);
-
+    public abstract int processar(Produto produto, MateriaPrima materiaPrima, int quantidade);
     public abstract String getTipo();
 
-    //Concrete
-    public void ligar() {
-        this.ligada = true;
-        System.out.printf("\n[OK] %s ligado(a).", this.nome);
+    public void ligar() { ligada = true; }
+    public void desligar() { ligada = false; }
+    public boolean estaLigada() { return ligada; }
+    public String getNome() { return nome; }
+    public double getCustoOperacao() { return custoOperacao; }
+    public int getCapacidadeMaxima() { return capacidadeMaxima; }
+    public double getSaude() { return health; }
+
+    public void configurarCenario(Cenario cenario) {
+        this.multiplicadorFalha = cenario.getMultiplicadorFalha();
+        this.multiplicadorDesgaste = cenario.getMultiplicadorDesgaste();
     }
 
-    public void desligar() {
-        this.ligada = false;
-        System.out.printf("\n[OK] %s desligado(a).",this.nome);
+    protected boolean podeOperar() { return health > 0.0; }
+    protected double getMultiplicadorFalhaCenario() { return multiplicadorFalha; }
+
+    protected boolean verificarFalha() {
+        double fatorSaude = 1.0 + (100.0 - health) / 100.0;
+        double chance = Math.min(1.0, probabilidadeFalha * multiplicadorFalha * fatorSaude);
+        return random.nextDouble() < chance;
     }
 
-    public boolean estaLigada() {
-        return this.ligada;
+    protected void aplicarDesgaste() {
+        health -= random.nextDouble(0.0, 3.0) * multiplicadorDesgaste;
+        if (health < 0.0) health = 0.0;
     }
 
-    public String getNome() {
-        return this.nome;
+    protected int limitarQuantidade(int quantidade) {
+        return Math.max(0, Math.min(quantidade, capacidadeMaxima));
     }
 
-    public double getCustoOperacao() {
-        return this.custoOperacao;
-    }
-
-   
-    protected boolean verificarFalha()
-    {
-        if(Main.RANDOM.nextDouble() < this.probabilidadeFalha){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    //retorna true caso a maquina quebre
-    protected boolean dano() {
-        this.probabilidadeFalha+=0.005;
-        if (this.health>1) {
-            this.health--;
-            return false;
-        }else{
-            this.health--;
-            System.out.printf("\n[NOK] %s está quebrada", getNome());
-            return true;
-        }
-    }
-
-    //Interfaces
+    public void reparar() { health = 100.0; }
 
     @Override
-    public String gerarRelatorioDiagnostico(){
-        return String.valueOf(this.health);
-    }
+    public boolean precisaManutencao() { return health < 30.0; }
 
     @Override
-    public boolean precisaDeManutencao(){
-        if(this.health<20){
-            return true;
-        }else{
-            return false;   
-        }  
+    public String gerarRelatorioDiagnostico() {
+        return String.format("Maquina: %s | Tipo: %s | Saude: %.1f/100 | Manutencao: %s",
+                nome, getTipo(), health, precisaManutencao() ? "SIM" : "NAO");
     }
 }

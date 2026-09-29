@@ -1,10 +1,7 @@
 package Estrategias;
-import java.util.ArrayList;
-
+import java.util.List;
 import Estrategias.Demandas.Demanda;
-
-public interface EstrategiaProducao
-{
-    public Demanda selecionarDemanda(ArrayList<Demanda> demandas, double orcamentoDisponivel);
-    public String getNomeEstrategia();
+public interface EstrategiaProducao {
+    Demanda selecionarDemanda(List<Demanda> demandas, double orcamentoDisponivel);
+    String getNomeEstrategia();
 }

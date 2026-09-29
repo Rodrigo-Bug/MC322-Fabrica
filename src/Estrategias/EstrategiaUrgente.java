@@ -1,16 +1,7 @@
 package Estrategias;
-
-import java.util.ArrayList;
-import Estrategias.Demandas.Demanda;
-
-public class EstrategiaUrgente implements EstrategiaProducao
-{
-    public Demanda selecionarDemanda(ArrayList<Demanda> demandas, double orcamentoDisponivel)
-    {
-        return demandas.get(demandas.size() - 1);
-    }
-    public String getNomeEstrategia()
-    {
-        return "Urgente";
-    }
+import java.util.List;
+import Estrategias.Demandas.*;
+public class EstrategiaUrgente implements EstrategiaProducao {
+    public Demanda selecionarDemanda(List<Demanda> demandas,double orcamento){ for(int i=demandas.size()-1;i>=0;i--) if(demandas.get(i).getStatus()==StatusDemanda.PENDENTE) return demandas.get(i); return null; }
+    public String getNomeEstrategia(){ return "Urgente"; }
 }
