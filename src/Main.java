@@ -30,12 +30,12 @@ public class Main {
         catalogo.add(new Pistao("CAT-PIS","Pistao",2.0,0.70,processo,2.0,1.0));
         catalogo.add(new Bloco("CAT-BLO","Bloco do Motor",15.0,0.95,processo,7.0,3.0));
 
-        GerenciadorProducao g = new GerenciadorProducao(cenario,aluminio);
-        g.adicionarMaquina(torno); g.adicionarMaquina(tratamento); g.adicionarMaquina(inspecao);
+        GerenciadorProducao gerenciadorProducao = new GerenciadorProducao(cenario,aluminio);
+        gerenciadorProducao.adicionarMaquina(torno); gerenciadorProducao.adicionarMaquina(tratamento); gerenciadorProducao.adicionarMaquina(inspecao);
 
         int op;
         do {
-            cabecalho(g);
+            cabecalho(gerenciadorProducao);
             System.out.println("1 - Demandas");
             System.out.println("2 - Fabricacao");
             System.out.println("3 - Consultar estoque/armazem");
@@ -46,13 +46,13 @@ public class Main {
             System.out.println("0 - Sair");
             op=lerInt("Escolha: ");
             switch(op){
-                case 1 -> menuDemandas(g,catalogo);
-                case 2 -> g.executarProximaProducao();
-                case 3 -> { g.exibirEstoque(); g.exibirArmazem(); }
-                case 4 -> { double q=lerDouble("Quantidade de aluminio para comprar: "); System.out.println(g.comprarMateriaPrima(q)?"[OK] Compra realizada.":"[NOK] Compra invalida ou budget insuficiente."); }
-                case 5 -> menuEstrategia(g);
-                case 6 -> g.gerarAuditoriaGeral();
-                case 7 -> {cenario=escolherCenario(); g.setCenario(cenario);}
+                case 1 -> menuDemandas(gerenciadorProducao,catalogo);
+                case 2 -> gerenciadorProducao.executarProximaProducao();
+                case 3 -> { gerenciadorProducao.exibirEstoque(); gerenciadorProducao.exibirArmazem(); }
+                case 4 -> { double q=lerDouble("Quantidade de aluminio para comprar: "); System.out.println(gerenciadorProducao.comprarMateriaPrima(q)?"[OK] Compra realizada.":"[NOK] Compra invalida ou budget insuficiente."); }
+                case 5 -> menuEstrategia(gerenciadorProducao);
+                case 6 -> gerenciadorProducao.gerarAuditoriaGeral();
+                case 7 -> {cenario=escolherCenario(); gerenciadorProducao.setCenario(cenario);}
                 case 0 -> System.out.println("Encerrando a fabrica.");
                 default -> System.out.println("Opcao invalida.");
             }
@@ -60,26 +60,104 @@ public class Main {
     }
 
     private static Cenario escolherCenario(){
-        while(true){ System.out.println("1 - Cenario Ideal\n2 - Cenario Apocaliptico"); int op=lerInt("Escolha: "); if(op==1||op==2)return Cenario.escolha(op); System.out.println("Opcao invalida."); }
+        while(true){
+             System.out.println("1 - Cenario Ideal"); 
+              System.out.println("2 - Cenario Apocaliptico");
+             int op=lerInt("Escolha: ");
+
+              if(op==1||op==2){
+                return Cenario.escolha(op); 
+              }
+
+            System.out.println("Opcao invalida."); 
+        }
     }
-    private static void cabecalho(GerenciadorProducao g){
+    
+    private static void cabecalho(GerenciadorProducao gerenciarProducao){
         System.out.println("\n============================================================");
-        System.out.println("ESTRATEGIA ATUAL: "+g.getEstrategia().getNomeEstrategia());
-        System.out.println("CENARIO ATIVO: "+g.getCenario().getDescricao());
-        System.out.printf("BUDGET ATUAL: R$ %.2f%n",g.getBudget());
+        System.out.println("ESTRATEGIA ATUAL: "+gerenciarProducao.getEstrategia().getNomeEstrategia());
+        System.out.println("CENARIO ATIVO: "+gerenciarProducao.getCenario().getDescricao());
+        System.out.printf("BUDGET ATUAL: R$ %.2f%n",gerenciarProducao.getBudget());
         System.out.println("============================================================");
     }
-    private static void menuDemandas(GerenciadorProducao g,ArrayList<Produto> catalogo){
-        System.out.println("1 - Registrar demanda\n2 - Atualizar demanda\n3 - Listar demandas\n0 - Voltar");
+    
+    private static void menuDemandas(GerenciadorProducao gerenciarProducao,ArrayList<Produto> catalogo){
+        System.out.println("\n1 - Registrar demanda");
+        System.out.println("2 - Atualizar demanda");
+        System.out.println("3 - Listar demandas");
+        System.out.println("0 - Voltar");
+
         int op=lerInt("Escolha: ");
-        if(op==1){ for(int i=0;i<catalogo.size();i++)System.out.println((i+1)+" - "+catalogo.get(i).getNome()); int p=lerInt("Produto: "); int q=lerInt("Quantidade: "); if(p>=1&&p<=catalogo.size()&&q>0){g.registrarDemanda(catalogo.get(p-1),q);System.out.println("[OK] Demanda registrada.");}else System.out.println("Dados invalidos."); }
-        else if(op==2){ int id=lerInt("ID da demanda: "); int q=lerInt("Nova quantidade: "); System.out.println(g.atualizarDemanda(id,q)?"[OK] Atualizada.":"[NOK] Demanda nao encontrada."); }
-        else if(op==3){ if(g.getDemandas().isEmpty())System.out.println("Nenhuma demanda."); for(Demanda d:g.getDemandas())System.out.println(d.getDemanda()); }
+        int produto;
+        int qnt;
+        int id;
+
+        switch(op){ 
+        case 1:
+            for(int i=0;i<catalogo.size();i++){
+                System.out.printf("%d - %s\n", i+1, catalogo.get(i).getNome()); 
+            }
+
+            produto=lerInt("Produto: ");
+            qnt=lerInt("Quantidade: "); 
+            if(produto>=1&&produto<=catalogo.size()&&qnt>0){
+                gerenciarProducao.registrarDemanda(catalogo.get(produto-1),qnt);
+                System.out.println("[OK] Demanda registrada.");
+            }else{
+                System.out.println("Dados invalidos."); 
+            }
+        break;
+
+        case 2:
+            id=lerInt("ID da demanda: "); 
+            qnt=lerInt("Quantidade: "); 
+            System.out.println(gerenciarProducao.atualizarDemanda(id,qnt)?"[OK] Atualizada.":"[NOK] Demanda nao encontrada.");
+         break;
+
+        case 3:
+            if(gerenciarProducao.getDemandas().isEmpty()){
+                System.out.println("Nenhuma demanda."); 
+            }else{
+                for(Demanda d:gerenciarProducao.getDemandas()){
+                    System.out.println(d.getDemanda()); 
+                }
+            }
+        break;
+        }
     }
-    private static void menuEstrategia(GerenciadorProducao g){
-        System.out.println("1 - Ordem de Chegada\n2 - Maior Demanda\n3 - Maximo de Produtos"); int op=lerInt("Escolha: ");
-        switch(op){ case 1 -> g.setEstrategia(new EstrategiaOrdemChegada()); case 2 -> g.setEstrategia(new EstrategiaMaiorDemanda()); case 3 -> g.setEstrategia(new EstrategiaMaximoProdutos()); default -> System.out.println("Opcao invalida."); }
+
+    private static void menuEstrategia(GerenciadorProducao gerenciarProducao){
+        System.out.println("1 - Ordem de Chegada"); 
+        System.out.println("2 - Maior Demanda");
+        System.out.println("3 - Maximo de Produtos");
+        int op=lerInt("Escolha: ");
+
+        switch(op){ 
+            case 1 -> gerenciarProducao.setEstrategia(new EstrategiaOrdemChegada()); 
+            case 2 -> gerenciarProducao.setEstrategia(new EstrategiaMaiorDemanda()); 
+            case 3 -> gerenciarProducao.setEstrategia(new EstrategiaMaximoProdutos()); 
+            default -> System.out.println("Opcao invalida."); }
     }
-    private static int lerInt(String msg){ while(true){ System.out.print(msg); if(teclado.hasNextInt())return teclado.nextInt(); teclado.next(); System.out.println("Digite apenas numeros inteiros."); } }
-    private static double lerDouble(String msg){ while(true){ System.out.print(msg); if(teclado.hasNextDouble())return teclado.nextDouble(); teclado.next(); System.out.println("Digite apenas numeros."); } }
+    
+    private static int lerInt(String msg){
+         while(true){ 
+            System.out.print(msg); 
+            if(teclado.hasNextInt()){
+                return teclado.nextInt(); 
+            }
+            teclado.next(); 
+            System.out.println("Digite apenas numeros inteiros."); 
+        } 
+    }
+    
+    private static double lerDouble(String msg){ 
+        while(true){ 
+            System.out.print(msg); 
+            if(teclado.hasNextDouble()){
+                return teclado.nextDouble(); 
+            }
+            teclado.next(); 
+            System.out.println("Digite apenas numeros."); 
+        } 
+    }
 }

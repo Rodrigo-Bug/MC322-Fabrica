@@ -23,7 +23,11 @@ public class Demanda {
     public double calcularMateriaPrimaNecessaria() { return getQuantidadeRestante()*tipoProduto.getDemandaMateriaPrima(); }
     public double estimarCustoOperacao() { return tipoProduto.getProcessoProducao().stream().mapToDouble(m->m.getCustoOperacao()).sum()*getQuantidadeRestante(); }
     public boolean ehFinanceiramenteViavel(double orcamento) { return estimarCustoOperacao() <= orcamento; }
+    
+    
     public void iniciar() { if (status==StatusDemanda.PENDENTE) status=StatusDemanda.EM_PRODUCAO; }
+    
+    
     public void registrarProduzidos(int q) { if (status!=StatusDemanda.EM_PRODUCAO || q<=0) return; quantidadeProduzida=Math.min(quantidadeProdutos, quantidadeProduzida+q); if (quantidadeProduzida>=quantidadeProdutos) status=StatusDemanda.CONCLUIDA; }
     public void cancelar() { if (status!=StatusDemanda.CONCLUIDA) status=StatusDemanda.CANCELADA; }
     public String getDemanda() { return id+" | Produto: "+tipoProduto.getNome()+" | Quantidade: "+quantidadeProdutos+" | Produzida: "+quantidadeProduzida+" | Status: "+status.getDescricao(); }
