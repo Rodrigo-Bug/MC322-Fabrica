@@ -1,10 +1,14 @@
 package PackProdutos;
 
 import java.util.ArrayList;
-import PackInterfaces.Auditavel;
+import PackInterfaces.*;
 import PackMaquinas.Maquina;
+import outros.Cenario;
 
-public abstract class Produto implements Auditavel {
+
+public abstract class Produto implements Auditavel, Aleatorio{
+    protected double minFalhaCenario; 
+    protected double maxFalhaCenario;
     protected String id;
     protected String nome;
     protected StatusProduto status = StatusProduto.FUNDIDO;
@@ -16,12 +20,26 @@ public abstract class Produto implements Auditavel {
     protected double tempoTratamentoSuperficial;
     private int lote;
     private static int totalProdutosFabricados = 0;
+    
+    public Produto (String id, String nome, double materiaPrima, double qualidade, ArrayList<Maquina> processo, double tempoUsinagem, double tempoTratamento, Cenario cenario) {
+        this.id=id; 
+        this.nome=nome; 
+        this.quantidadeMateriaPrimaNecessaria=materiaPrima; 
+        this.qualidade=qualidade;
+        this.processoProducao=processo; 
+        this.tempoUsinagem=tempoUsinagem; 
+        this.tempoTratamentoSuperficial=tempoTratamento;
+        configurarCenario(cenario);
+    }
+
 
     public abstract void processar(StatusProduto proxStatus);
     public abstract double calcularTempoProducao(int demanda);
     public abstract String getTipo();
-    public abstract Produto criarNovaUnidade(String novoId, int lote);
+    public abstract Produto criarNovaUnidade(String novoId, int lote, Cenario cenario);
 
+
+    public  void configurarCenario(Cenario cenario){this.minFalhaCenario=cenario.getFalhaProdutoMin() ;this.maxFalhaCenario=cenario.getFalhaProdutoMax();}
     public String getId() { return id; }
     public String getNome() { return nome; }
     public StatusProduto getStatus() { return status; }
@@ -34,7 +52,7 @@ public abstract class Produto implements Auditavel {
     public int getLote() { return lote; }
     protected void setLote(int lote) { this.lote = lote; }
 
-    public void upProbabilidadeFalha() { probabilidadeFalhaAcumulada = Math.min(1.0, probabilidadeFalhaAcumulada + 0.10); }
+    public void upProbabilidadeFalha() { probabilidadeFalhaAcumulada +=  (numeroAleatorio(this.minFalhaCenario, this.maxFalhaCenario)); }
     protected static void incrementarTotalProdutosFabricados() { totalProdutosFabricados++; }
     public static int getTotalProdutosFabricados() { return totalProdutosFabricados; }
 
@@ -46,6 +64,6 @@ public abstract class Produto implements Auditavel {
 
     @Override
     public boolean precisaManutencao() {
-        return qualidade < 0.60 || probabilidadeFalhaAcumulada > 0.50;
+        return probabilidadeFalhaAcumulada > 0.30;
     }
 }

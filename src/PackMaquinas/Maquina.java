@@ -1,12 +1,12 @@
 package PackMaquinas;
 
-import java.util.Random;
-import PackInterfaces.Auditavel;
+
+import PackInterfaces.*;
 import PackMateriaPrima.MateriaPrima;
 import PackProdutos.Produto;
 import outros.Cenario;
 
-public abstract class Maquina implements Auditavel {
+public abstract class Maquina implements Auditavel, Aleatorio {
     private String nome;
     private double health;
     private boolean ligada;
@@ -15,10 +15,9 @@ public abstract class Maquina implements Auditavel {
     private double custoOperacao;
     private double multiplicadorFalha;
     private double multiplicadorDesgaste;
-    protected final Random random = new Random();
 
-    protected Maquina(String nome, int capacidadeMaxima, double probabilidadeFalha,
-                      double custoOperacao, Cenario cenario) {
+
+    protected Maquina(String nome, int capacidadeMaxima, double probabilidadeFalha,double custoOperacao, Cenario cenario) {
         this.nome = nome;
         this.health = 100.0;
         this.ligada = false;
@@ -49,12 +48,12 @@ public abstract class Maquina implements Auditavel {
 
     protected boolean verificarFalha() {
         double fatorSaude = 1.0 + (100.0 - health) / 100.0;
-        double chance = Math.min(1.0, probabilidadeFalha * multiplicadorFalha * fatorSaude);
-        return random.nextDouble() < chance;
+        double chance = (probabilidadeFalha * multiplicadorFalha * fatorSaude);
+        return numeroAleatorio(0,1) < chance;
     }
 
     protected void aplicarDesgaste() {
-        health -= random.nextDouble(0.0, 3.0) * multiplicadorDesgaste;
+        health -= numeroAleatorio(0.0, 3.0) * multiplicadorDesgaste;
         if (health < 0.0) health = 0.0;
     }
 

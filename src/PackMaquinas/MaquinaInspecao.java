@@ -19,9 +19,8 @@ public class MaquinaInspecao extends Maquina {
             aplicarDesgaste();
             boolean maquinaFalhou = verificarFalha();
             // Regra da Tarefa 2: qualidade maior implica criterio de inspecao mais rigoroso.
-            double chanceRejeicao = Math.min(0.95,
-                    (produto.getQualidade() * 0.05 + produto.getProbabilidadeFalhaAcumulada()) * getMultiplicadorFalhaCenario());
-            if (!maquinaFalhou && random.nextDouble() >= chanceRejeicao) aprovados++;
+            double chanceRejeicao = (produto.getQualidade() * 0.05 + produto.getProbabilidadeFalhaAcumulada()) * getMultiplicadorFalhaCenario();
+            if (!maquinaFalhou && numeroAleatorio(0,1) >= chanceRejeicao) aprovados++;
         }
         if (aprovados > 0) produto.processar(StatusProduto.INSPECIONADO);
         return aprovados;

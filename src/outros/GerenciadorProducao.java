@@ -30,7 +30,11 @@ public class GerenciadorProducao {
     }
 
 
-    public void adicionarMaquina(Maquina m){ if(m!=null){ m.configurarCenario(cenario); maquinas.add(m); } }
+    public void adicionarMaquina(Maquina maquina){ 
+        if(maquina!=null){ 
+            maquina.configurarCenario(cenario); 
+            maquinas.add(maquina); } 
+        }
 
 
     public void setEstrategia(EstrategiaProducao nova){ if(nova!=null){ estrategiaAnterior=estrategiaAtual; estrategiaAtual=nova; } }
@@ -88,20 +92,36 @@ public class GerenciadorProducao {
         int lote=proximoLote++;
         int concluidos=0;
         for(int i=0;i<quantidade;i++){
-            Produto unidade=demanda.getProduto().criarNovaUnidade("P"+(proximoProduto++),lote);
+            Produto unidade=demanda.getProduto().criarNovaUnidade("P"+(proximoProduto++),lote, cenario);
             if(!materiaPrima.consumir(unidade.getDemandaMateriaPrima())) break;
             boolean sucesso=true;
-            for(Maquina m:unidade.getProcessoProducao()){
-                if(budget<m.getCustoOperacao()){ sucesso=false; break; }
-                m.ligar(); budget-=m.getCustoOperacao();
-                int feitos=m.processar(unidade,materiaPrima,1); m.desligar();
-                if(feitos<1){ sucesso=false; break; }
+
+            for(Maquina maquina:unidade.getProcessoProducao()){
+                if(budget<maquina.getCustoOperacao()){ 
+                    sucesso=false; 
+                    break; 
+                }
+                maquina.ligar();
+                budget-=maquina.getCustoOperacao();
+                int feitos=maquina.processar(unidade,materiaPrima,1); maquina.desligar();
+                if(feitos<1){ 
+                    sucesso=false;
+                    break; 
+                }
             }
-            if(sucesso){ unidade.processar(StatusProduto.FINALIZADO); produtosFabricados.add(unidade); concluidos++; }
+            if(sucesso){ 
+                unidade.processar(StatusProduto.FINALIZADO); 
+                produtosFabricados.add(unidade); 
+                concluidos++; 
+            }
         }
         demanda.registrarProduzidos(concluidos);
-        if(demanda.getStatus()!=StatusDemanda.CONCLUIDA){ demanda.cancelar(); System.out.println("[NOK] Producao interrompida; demanda cancelada."); }
-        else System.out.println("[OK] Demanda "+demanda.getId()+" concluida: "+concluidos+" unidade(s).");
+        if(demanda.getStatus()!=StatusDemanda.CONCLUIDA){ 
+            System.out.println("[NOK] Producao interrompida; Demanda "+demanda.getId()+" ainda possui "+demanda.getQuantidadeRestante()+" "+demanda.getProduto().getNome()+"(s) pendentes."); 
+            demanda.pendente();
+        }else{
+            System.out.println("[OK] Demanda "+demanda.getId()+" concluida: "+concluidos+" unidade(s).");
+        }
     }
 
     public boolean comprarMateriaPrima(double q){ 
@@ -118,6 +138,7 @@ public class GerenciadorProducao {
 
 
     public void exibirEstoque(){ System.out.printf("%s: %.2f %s | custo/unidade: R$ %.2f%n",materiaPrima.getNome(),materiaPrima.getQuantidade(),materiaPrima.getUnidade(),materiaPrima.getCusto()); }
+    
     public void exibirArmazem(){
         if(produtosFabricados.isEmpty()){ System.out.println("Armazem vazio."); return; }
         for(Produto p:produtosFabricados) System.out.printf("%s | %s | lote %d | qualidade %.2f | risco %s%n",p.getId(),p.getNome(),p.getLote(),p.getQualidade(),p.precisaManutencao()?"ATENCAO":"NORMAL");

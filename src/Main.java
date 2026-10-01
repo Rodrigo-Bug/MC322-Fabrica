@@ -25,10 +25,10 @@ public class Main {
         ArrayList<Maquina> processo = new ArrayList<>(List.of(torno,tratamento,inspecao));
 
         ArrayList<Produto> catalogo = new ArrayList<>();
-        catalogo.add(new Cabecote("CAT-CAB","Cabecote",8.0,0.90,processo,4.0,2.0));
-        catalogo.add(new Virabrequim("CAT-VIR","Virabrequim",10.0,0.85,processo,5.0,2.5));
-        catalogo.add(new Pistao("CAT-PIS","Pistao",2.0,0.70,processo,2.0,1.0));
-        catalogo.add(new Bloco("CAT-BLO","Bloco do Motor",15.0,0.95,processo,7.0,3.0));
+        catalogo.add(new Cabecote("CAT-CAB","Cabecote",8.0,0.,processo,4.0,2.0, cenario));
+        catalogo.add(new Virabrequim("CAT-VIR","Virabrequim",10.0,0.,processo,5.0,2.5, cenario));
+        catalogo.add(new Pistao("CAT-PIS","Pistao",2.0,0.,processo,2.0,1.0, cenario));
+        catalogo.add(new Bloco("CAT-BLO","Bloco do Motor",15.0,0.,processo,7.0,3.0, cenario));
 
         GerenciadorProducao gerenciadorProducao = new GerenciadorProducao(cenario,aluminio);
         gerenciadorProducao.adicionarMaquina(torno); gerenciadorProducao.adicionarMaquina(tratamento); gerenciadorProducao.adicionarMaquina(inspecao);
@@ -52,7 +52,7 @@ public class Main {
                 case 4 -> { double q=lerDouble("Quantidade de aluminio para comprar: "); System.out.println(gerenciadorProducao.comprarMateriaPrima(q)?"[OK] Compra realizada.":"[NOK] Compra invalida ou budget insuficiente."); }
                 case 5 -> menuEstrategia(gerenciadorProducao);
                 case 6 -> gerenciadorProducao.gerarAuditoriaGeral();
-                case 7 -> {cenario=escolherCenario(); gerenciadorProducao.setCenario(cenario);}
+                case 7 -> {cenario=escolherCenario(); gerenciadorProducao.setCenario(cenario);for (Maquina maquina : processo) {maquina.configurarCenario(cenario);}}
                 case 0 -> System.out.println("Encerrando a fabrica.");
                 default -> System.out.println("Opcao invalida.");
             }
