@@ -49,11 +49,20 @@ public class Main {
             switch(op){
                 case 1: menuDemandas(gerenciadorProducao,catalogo);break;
                 case 2: gerenciadorProducao.executarProximaProducao();break;
-                case 3: { gerenciadorProducao.exibirEstoque(); gerenciadorProducao.exibirArmazem();break; }
-                case 4: { double q=lerDouble("Quantidade de aluminio para comprar: "); System.out.println(gerenciadorProducao.comprarMateriaPrima(q)?"[OK] Compra realizada.":"[NOK] Compra invalida ou budget insuficiente.");break; }
+                case 3: gerenciadorProducao.exibirEstoque(); gerenciadorProducao.exibirArmazem();break; 
+                case 4: 
+                    double q=lerDouble("Quantidade de aluminio para comprar: ");
+                    System.out.println(gerenciadorProducao.comprarMateriaPrima(q)?"[OK] Compra realizada.":"[NOK] Compra invalida ou budget insuficiente.");
+                    break; 
                 case 5: menuEstrategia(gerenciadorProducao);break;
                 case 6: gerenciadorProducao.gerarAuditoriaGeral();break;
-                case 7: {cenario=escolherCenario(); gerenciadorProducao.setCenario(cenario);for (Maquina maquina : processo) {maquina.configurarCenario(cenario);}break;}
+                case 7: 
+                    cenario=escolherCenario(); 
+                    gerenciadorProducao.setCenario(cenario);
+                    for (Maquina maquina : processo) {
+                        maquina.configurarCenario(cenario);
+                    }
+                    break;
                 case 8: menuManutencao(cenario, gerenciadorProducao, processo);break;
                 case 0: System.out.println("Encerrando a fabrica.");break;
                 default: System.out.println("Opcao invalida.");break;
