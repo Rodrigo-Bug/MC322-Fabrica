@@ -79,10 +79,10 @@ public class GerenciadorProducao {
                 System.out.println("3 - Cancelar demanda");
                 op=lerInt("Escolha: ");
                 switch(op){
-                    case 1 -> {System.out.println(comprarMateriaPrima(materiaNecessaria-materiaPrima.getQuantidade())?"[OK] Compra realizada.":"[NOK] Compra invalida ou budget insuficiente."); break;}
-                    case 2 -> {System.out.println("[OK] Voltando para o menu");return;}
-                    case 3 -> {System.out.println("[OK] Demanda Cancelada");demanda.cancelar();return; }
-                    default -> System.out.println("Opcao invalida.");
+                    case 1: {System.out.println(comprarMateriaPrima(materiaNecessaria-materiaPrima.getQuantidade())?"[OK] Compra realizada.":"[NOK] Compra invalida ou budget insuficiente."); break;}
+                    case 2: {System.out.println("[OK] Voltando para o menu");return;}
+                    case 3: {System.out.println("[OK] Demanda Cancelada");demanda.cancelar();return; }
+                    default: System.out.println("Opcao invalida.");break;
                 }
             }while (op!=1);
         }
@@ -91,9 +91,14 @@ public class GerenciadorProducao {
         demanda.iniciar();
         int lote=proximoLote++;
         int concluidos=0;
+
+
+
+
         for(int i=0;i<quantidade;i++){
+
             Produto unidade=demanda.getProduto().criarNovaUnidade("P"+(proximoProduto++),lote, cenario);
-            if(!materiaPrima.consumir(unidade.getDemandaMateriaPrima())) break;
+            if(!materiaPrima.verificarDisponibilidade(unidade.getDemandaMateriaPrima())) break;
             boolean sucesso=true;
 
             for(Maquina maquina:unidade.getProcessoProducao()){
@@ -101,7 +106,40 @@ public class GerenciadorProducao {
                     sucesso=false; 
                     break; 
                 }
+                
+                if (!maquina.podeOperar()) {
+                    int op;
+                    System.out.println("[NOK] Maquina quebrada, produção parada. Deseja repara a "+maquina.getNome()+"?");
+                    System.out.println("1 - Sim");
+                    System.out.println("2 - Não");
+                    op=lerInt("Escolha");
+                    switch (op) {
+                        case 1:
+                                    if(maquina.reparar(cenario, this)){
+                                        System.out.println("[OK] Maquina reparada com sucesso");
+                                    }else{
+                                        System.out.println("[NOK] Budget insuficiente. Reparo não realizado");
+                                        sucesso=false;
+                                    }
+                            break;
+
+                        case 2:
+                                    System.out.println("[OK] Reparo não realizado");
+                                    sucesso=false;
+                            break;
+                    
+                        default:
+                                    System.out.println("[NOK] Opção invalida, reparo não realizado");
+                                    sucesso=false;
+                            break;
+                    }
+                
+                
+                
+                }
+
                 maquina.ligar();
+                
                 budget-=maquina.getCustoOperacao();
                 int feitos=maquina.processar(unidade,materiaPrima,1); maquina.desligar();
                 if(feitos<1){ 
@@ -109,11 +147,16 @@ public class GerenciadorProducao {
                     break; 
                 }
             }
+            
             if(sucesso){ 
+                materiaPrima.consumir(unidade.getDemandaMateriaPrima());
                 unidade.processar(StatusProduto.FINALIZADO); 
                 produtosFabricados.add(unidade); 
                 concluidos++; 
             }
+
+            
+
         }
         demanda.registrarProduzidos(concluidos);
         if(demanda.getStatus()!=StatusDemanda.CONCLUIDA){ 
@@ -162,4 +205,7 @@ public class GerenciadorProducao {
             System.out.println("Digite apenas numeros inteiros."); 
        }
     }
+
+    public boolean gastar(double valor){if(getBudget()>=valor){budget-=valor; return true;}else return false;}
+
 }

@@ -43,18 +43,20 @@ public class Main {
             System.out.println("5 - Gerenciar estrategia");
             System.out.println("6 - Auditoria");
             System.out.println("7 - Alterar cenario");
+            System.out.println("8 - Realizar manutenção");
             System.out.println("0 - Sair");
             op=lerInt("Escolha: ");
             switch(op){
-                case 1 -> menuDemandas(gerenciadorProducao,catalogo);
-                case 2 -> gerenciadorProducao.executarProximaProducao();
-                case 3 -> { gerenciadorProducao.exibirEstoque(); gerenciadorProducao.exibirArmazem(); }
-                case 4 -> { double q=lerDouble("Quantidade de aluminio para comprar: "); System.out.println(gerenciadorProducao.comprarMateriaPrima(q)?"[OK] Compra realizada.":"[NOK] Compra invalida ou budget insuficiente."); }
-                case 5 -> menuEstrategia(gerenciadorProducao);
-                case 6 -> gerenciadorProducao.gerarAuditoriaGeral();
-                case 7 -> {cenario=escolherCenario(); gerenciadorProducao.setCenario(cenario);for (Maquina maquina : processo) {maquina.configurarCenario(cenario);}}
-                case 0 -> System.out.println("Encerrando a fabrica.");
-                default -> System.out.println("Opcao invalida.");
+                case 1: menuDemandas(gerenciadorProducao,catalogo);break;
+                case 2: gerenciadorProducao.executarProximaProducao();break;
+                case 3: { gerenciadorProducao.exibirEstoque(); gerenciadorProducao.exibirArmazem();break; }
+                case 4: { double q=lerDouble("Quantidade de aluminio para comprar: "); System.out.println(gerenciadorProducao.comprarMateriaPrima(q)?"[OK] Compra realizada.":"[NOK] Compra invalida ou budget insuficiente.");break; }
+                case 5: menuEstrategia(gerenciadorProducao);break;
+                case 6: gerenciadorProducao.gerarAuditoriaGeral();break;
+                case 7: {cenario=escolherCenario(); gerenciadorProducao.setCenario(cenario);for (Maquina maquina : processo) {maquina.configurarCenario(cenario);}break;}
+                case 8: menuManutencao(cenario, gerenciadorProducao, processo);break;
+                case 0: System.out.println("Encerrando a fabrica.");break;
+                default: System.out.println("Opcao invalida.");break;
             }
         } while(op!=0);
     }
@@ -81,6 +83,25 @@ public class Main {
         System.out.println("============================================================");
     }
     
+    private static void menuManutencao(Cenario cenario,GerenciadorProducao gerenciadorProducao,ArrayList<Maquina> maquinas){
+        int op;
+        System.out.println("Qual maquina dejesa reparar?");
+        for (int i=0;i<maquinas.size();i++) {
+            System.out.println((i+1)+" - " + maquinas.get(i).getNome());
+        }
+        op=lerInt("Escolha: ");
+        if(op-1>maquinas.size()){
+            System.out.println("Opção invalida.");
+        } else {
+            if(maquinas.get(op-1).reparar(cenario, gerenciadorProducao)){
+                System.out.println("[OK] Maquina reparada com sucesso");
+            }else{
+                System.out.println("[NOK] Budget insuficiente. Reparo não realizado");
+            }
+        }
+    }
+
+
     private static void menuDemandas(GerenciadorProducao gerenciarProducao,ArrayList<Produto> catalogo){
         System.out.println("\n1 - Registrar demanda");
         System.out.println("2 - Atualizar demanda");
@@ -94,6 +115,7 @@ public class Main {
 
         switch(op){ 
         case 1:
+            System.out.println("");
             for(int i=0;i<catalogo.size();i++){
                 System.out.printf("%d - %s\n", i+1, catalogo.get(i).getNome()); 
             }
@@ -133,10 +155,10 @@ public class Main {
         int op=lerInt("Escolha: ");
 
         switch(op){ 
-            case 1 -> gerenciarProducao.setEstrategia(new EstrategiaOrdemChegada()); 
-            case 2 -> gerenciarProducao.setEstrategia(new EstrategiaMaiorDemanda()); 
-            case 3 -> gerenciarProducao.setEstrategia(new EstrategiaMaximoProdutos()); 
-            default -> System.out.println("Opcao invalida."); }
+            case 1: gerenciarProducao.setEstrategia(new EstrategiaOrdemChegada());break; 
+            case 2: gerenciarProducao.setEstrategia(new EstrategiaMaiorDemanda()); break;
+            case 3: gerenciarProducao.setEstrategia(new EstrategiaMaximoProdutos()); break;
+            default: System.out.println("Opcao invalida."); break;}
     }
     
     private static int lerInt(String msg){

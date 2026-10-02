@@ -5,6 +5,7 @@ import PackInterfaces.*;
 import PackMateriaPrima.MateriaPrima;
 import PackProdutos.Produto;
 import outros.Cenario;
+import outros.GerenciadorProducao;
 
 public abstract class Maquina implements Auditavel, Aleatorio {
     private String nome;
@@ -43,7 +44,7 @@ public abstract class Maquina implements Auditavel, Aleatorio {
         this.multiplicadorDesgaste = cenario.getMultiplicadorDesgaste();
     }
 
-    protected boolean podeOperar() { return health > 0.0; }
+    public boolean podeOperar() { return health > 0.0; }
     protected double getMultiplicadorFalhaCenario() { return multiplicadorFalha; }
 
     protected boolean verificarFalha() {
@@ -61,7 +62,7 @@ public abstract class Maquina implements Auditavel, Aleatorio {
         return Math.max(0, Math.min(quantidade, capacidadeMaxima));
     }
 
-    public void reparar() { health = 100.0; }
+    public boolean reparar(Cenario cenario, GerenciadorProducao g) {if(g.gastar(getCustoOperacao()*10)){health = cenario.getDescricao().equals("Ideal") ? numeroAleatorio(80, 100):numeroAleatorio(50, 80);return true;}return false;}
 
     @Override
     public boolean precisaManutencao() { return health < 30.0; }
