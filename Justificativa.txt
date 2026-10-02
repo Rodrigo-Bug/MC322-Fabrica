@@ -1,4 +1,4 @@
-RL SOLUCOES - JUSTIFICATIVA DO PROJETO
+O projeto simula uma fábrica automotiva e foi desenvolvido aplicando os principais conceitos abordados na Tarefa 3.
 
 Foi utilizado o padrão Strategy para permitir diferentes formas de selecionar as demandas de produção e possibilitar a 
 troca da estratégia durante a execução. Também foram utilizados enums para representar os estados das demandas e a 
