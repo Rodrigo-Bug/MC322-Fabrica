@@ -16,7 +16,7 @@ public class Main {
         System.out.println("Desenvolvido por: Rodrigo Gonçaves e Lucas Marques"); 
         System.out.println("============================================================");
 
-        Cenario cenario = escolherCenario();
+        Cenario cenario = escolherCenarioPrimeiraVez();
         MateriaPrima aluminio = new MateriaPrima("AL2618","Aluminio",100.0,"kg",10.0);
 
         MaquinaUsinagem torno = new MaquinaUsinagem("Torno CNC",50,10.0,cenario);
@@ -70,13 +70,29 @@ public class Main {
         } while(op!=0);
     }
 
-    private static Cenario escolherCenario(){
+    private static Cenario escolherCenarioPrimeiraVez(){
         while(true){
-             System.out.println("1 - Cenario Ideal"); 
-              System.out.println("2 - Cenario Apocaliptico");
+            System.out.println("0 - Cenario de testes (Ideal, com dinheiro infinito)"); 
+            System.out.println("1 - Cenario Ideal"); 
+            System.out.println("2 - Cenario Apocaliptico");
              int op=lerInt("Escolha: ");
 
-              if(op==1||op==2){
+              if(op==1||op==2||op==0){
+                return Cenario.escolha(op); 
+              }
+
+            System.out.println("Opcao invalida."); 
+        }
+    }
+
+
+    private static Cenario escolherCenario(){
+        while(true){
+            System.out.println("1 - Cenario Ideal"); 
+            System.out.println("2 - Cenario Apocaliptico");
+             int op=lerInt("Escolha: ");
+
+              if(op==1||op==2||op==0){
                 return Cenario.escolha(op); 
               }
 

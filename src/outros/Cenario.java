@@ -1,6 +1,7 @@
 package outros;
 
 public enum Cenario {
+    TESTES("Ideal", Double.POSITIVE_INFINITY, 0.55, 0.55, 0.1, 0.3),
     IDEAL("Ideal", 10000.0, 0.55, 0.55, 0.1, 0.3),
     APOCALIPTICO("Apocaliptico", 1500.0, 2.20, 2.40, 0.2, 0.5);
 
@@ -29,6 +30,20 @@ public enum Cenario {
 
 
     public static Cenario escolha(int opcao) {
-        return opcao == 2 ? APOCALIPTICO : IDEAL;
+        Cenario cenario=IDEAL;
+        switch (opcao){
+            case 0:
+                cenario=TESTES;
+            break;
+
+            case 1:
+                cenario=IDEAL;
+            break;
+
+            case 2:
+                cenario=APOCALIPTICO;    
+            break;
+        }
+        return cenario;
     }
 }

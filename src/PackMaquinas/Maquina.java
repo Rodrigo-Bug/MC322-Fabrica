@@ -64,7 +64,8 @@ public abstract class Maquina implements Auditavel, Aleatorio {
 
     public boolean reparar(Cenario cenario, GerenciadorProducao g) {
         if(g.gastar(getCustoOperacao()*10)){
-            health = cenario.getDescricao().equals("Ideal") ? numeroAleatorio(80, 100):numeroAleatorio(50, 80);
+            double vida = cenario.getDescricao().equals("Ideal") ? numeroAleatorio(80, 100):numeroAleatorio(50, 80);
+            if(vida>health)health=vida;
             return true;
         }
         return false;
