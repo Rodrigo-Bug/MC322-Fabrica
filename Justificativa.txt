@@ -1,21 +1,17 @@
 RL SOLUCOES - JUSTIFICATIVA DO PROJETO
 
-Escolha do tema
-Escolhemos uma fabrica de componentes automotivos porque o tema permite representar de forma clara uma linha de producao com etapas diferentes e dependentes entre si. Cabecote, virabrequim, pistao e bloco do motor usam aluminio como materia-prima e passam por operacoes de usinagem, tratamento superficial e inspecao. Isso torna natural aplicar os conceitos de orientacao a objetos pedidos nas tarefas, sem perder a coerencia com uma fabrica real.
+Foi utilizado o padrão Strategy para permitir diferentes formas de selecionar as demandas de produção e possibilitar a 
+troca da estratégia durante a execução. Também foram utilizados enums para representar os estados das demandas e a 
+interface Auditavel para padronizar a auditoria de máquinas e produtos.
 
-Evolucao da Tarefa 1 para a Tarefa 2
-A estrutura inicial foi expandida com classes abstratas para Produto e Maquina, subclasses ligadas ao tema automotivo, ArrayList para demandas e armazem, simulacao de falhas e controle de budget. A materia-prima continua sendo controlada separadamente dos produtos acabados. O budget e debitado nas compras de aluminio e no uso das maquinas.
+Foram implementados os cenários Ideal e Apocalíptico, que alteram o orçamento, as probabilidades de falha e o 
+desgaste das máquinas. O sistema também permite consultar separadamente o estoque de matérias-primas e o 
+armazém de produtos acabados.
 
-Evolucao para a Tarefa 3
-Na Tarefa 3 o sistema foi refatorado para usar o padrao Strategy na escolha da proxima demanda. O GerenciadorProducao conhece apenas a interface EstrategiaProducao, permitindo trocar em tempo de execucao entre Ordem de Chegada, Maior Demanda e Maximo de Produtos. O estado da demanda passou a ser representado pelo enum StatusDemanda, evitando estados invalidos baseados em String ou boolean.
+Como possíveis atualizações futuras, o sistema pode receber novas estratégias de produção, novos tipos de produtos 
+e máquinas, um sistema mais completo de manutenção e reparo, controle de funcionários e turnos, fornecedores com 
+diferentes preços de matéria-prima e novos eventos aleatórios que afetem a produção. Também seria possível 
+implementar um histórico de produção e relatórios com informações sobre custos, falhas, produtividade e lucro da fábrica.
 
-A interface Auditavel foi aplicada a Produto e Maquina. Assim, o relatorio geral consegue percorrer objetos de hierarquias diferentes pelo mesmo contrato. As maquinas tambem possuem health de 0 a 100, desgaste aleatorio a cada uso e probabilidade de falha influenciada pela saude atual.
-
-Cenarios de simulacao
-O Cenario Ideal possui budget maior, menor chance de falha e desgaste reduzido. Ele foi pensado para demonstrar o fluxo completo da fabrica. O Cenario Apocaliptico possui budget menor, falhas mais provaveis e desgaste acelerado, servindo para testar a robustez do gerenciamento de demandas, das estrategias e das validacoes.
-
-Decisoes de projeto
-Mantivemos nomes ligados ao setor automotivo para preservar a identidade da fabrica. O armazem guarda unidades efetivamente finalizadas, cada uma com identificador e lote, enquanto o estoque representa apenas a materia-prima. A Main ficou responsavel pela interacao com o usuario e o GerenciadorProducao concentra as regras de producao, budget, demandas e armazenamento.
-
-Possiveis expansoes futuras
-Como continuacao, a fabrica poderia receber manutencao com custo e tempo de parada, diferentes ligas metalicas, fornecedores com precos distintos, ordens de venda, montagem de motores completos a partir dos componentes fabricados e novas estrategias de priorizacao baseadas em prazo, custo ou criticidade do cliente.
+Dessa forma, a estrutura atual permite que novas funcionalidades sejam adicionadas futuramente sem a necessidade 
+de grandes alterações nas classes já existentes.
