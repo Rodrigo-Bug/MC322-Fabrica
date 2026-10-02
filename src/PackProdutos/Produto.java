@@ -39,7 +39,10 @@ public abstract class Produto implements Auditavel, Aleatorio{
     public abstract Produto criarNovaUnidade(String novoId, int lote, Cenario cenario);
 
 
-    public  void configurarCenario(Cenario cenario){this.minFalhaCenario=cenario.getFalhaProdutoMin() ;this.maxFalhaCenario=cenario.getFalhaProdutoMax();}
+    public  void configurarCenario(Cenario cenario){
+        this.minFalhaCenario=cenario.getFalhaProdutoMin() ;
+        this.maxFalhaCenario=cenario.getFalhaProdutoMax();
+    }
     public String getId() { return id; }
     public String getNome() { return nome; }
     public StatusProduto getStatus() { return status; }

@@ -28,12 +28,22 @@ public class Demanda {
             quantidadeProdutos=qnt; 
         }
     }
-    public double calcularMateriaPrimaNecessaria() { return getQuantidadeRestante()*tipoProduto.getDemandaMateriaPrima(); }
-    public double estimarCustoOperacao() { return tipoProduto.getProcessoProducao().stream().mapToDouble(m->m.getCustoOperacao()).sum()*getQuantidadeRestante(); }
-    public boolean ehFinanceiramenteViavel(double orcamento) { return estimarCustoOperacao() <= orcamento; }
+    public double calcularMateriaPrimaNecessaria() { 
+        return getQuantidadeRestante()*tipoProduto.getDemandaMateriaPrima(); 
+    }
+    public double estimarCustoOperacao() { 
+        return tipoProduto.getProcessoProducao().stream().mapToDouble(m->m.getCustoOperacao()).sum()*getQuantidadeRestante(); 
+    }
+    public boolean ehFinanceiramenteViavel(double orcamento) { 
+        return estimarCustoOperacao() <= orcamento; 
+    }
     
     
-    public void iniciar() { if (status==StatusDemanda.PENDENTE) status=StatusDemanda.EM_PRODUCAO; }
+    public void iniciar() { 
+        if (status==StatusDemanda.PENDENTE) {
+            status=StatusDemanda.EM_PRODUCAO;
+        }
+    }
     
     
     public void registrarProduzidos(int qnt){
@@ -45,7 +55,16 @@ public class Demanda {
             status=StatusDemanda.CONCLUIDA; 
         }
     }
-    public void cancelar() { if (status!=StatusDemanda.CONCLUIDA) status=StatusDemanda.CANCELADA; }
-    public void  pendente() { if (status!=StatusDemanda.CONCLUIDA) status=StatusDemanda.PENDENTE; }
+    public void cancelar() { 
+        if (status!=StatusDemanda.CONCLUIDA) {
+            status=StatusDemanda.CANCELADA; 
+        }
+    }
+
+    public void  pendente() { 
+        if (status!=StatusDemanda.CONCLUIDA) {
+            status=StatusDemanda.PENDENTE; 
+        }
+    }
     public String getDemanda() { return id+" | Produto: "+tipoProduto.getNome()+" | Quantidade: "+quantidadeProdutos+" | Produzida: "+quantidadeProduzida+" | Status: "+status.getDescricao(); }
 }

@@ -18,7 +18,6 @@ public class MaquinaInspecao extends Maquina {
         for (int i = 0; i < alvo && podeOperar(); i++) {
             aplicarDesgaste();
             boolean maquinaFalhou = verificarFalha();
-            // Regra da Tarefa 2: qualidade maior implica criterio de inspecao mais rigoroso.
             double chanceRejeicao = (produto.getQualidade() * 0.05 + produto.getProbabilidadeFalhaAcumulada()) * getMultiplicadorFalhaCenario();
             if (!maquinaFalhou && numeroAleatorio(0,1) >= chanceRejeicao) aprovados++;
         }

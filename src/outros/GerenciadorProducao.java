@@ -87,7 +87,7 @@ public class GerenciadorProducao {
             }while (op!=1);
         }
 
-        if(custo>budget){ System.out.println("[NOK] Budget insuficiente. Demanda cancelada."); demanda.cancelar(); return; }
+        if(custo>budget){ System.out.println("[NOK] Budget insuficiente. Demanda Pendente."); demanda.pendente(); return; }
         demanda.iniciar();
         int lote=proximoLote++;
         int concluidos=0;
@@ -183,19 +183,35 @@ public class GerenciadorProducao {
     public void exibirEstoque(){ System.out.printf("%s: %.2f %s | custo/unidade: R$ %.2f%n",materiaPrima.getNome(),materiaPrima.getQuantidade(),materiaPrima.getUnidade(),materiaPrima.getCusto()); }
     
     public void exibirArmazem(){
-        if(produtosFabricados.isEmpty()){ System.out.println("Armazem vazio."); return; }
-        for(Produto p:produtosFabricados) System.out.printf("%s | %s | lote %d | qualidade %.2f | risco %s%n",p.getId(),p.getNome(),p.getLote(),p.getQualidade(),p.precisaManutencao()?"ATENCAO":"NORMAL");
+        if(produtosFabricados.isEmpty()){ 
+            System.out.println("Armazem vazio."); 
+            return; 
+        }
+        for(Produto p:produtosFabricados) {
+            System.out.printf("%s | %s | lote %d | qualidade %.2f | risco %s%n",p.getId(),p.getNome(),p.getLote(),p.getQualidade(),p.precisaManutencao()?"ATENCAO":"NORMAL");
+        }
         System.out.println("Quantidade total: "+produtosFabricados.size());
     }
 
     public void gerarAuditoriaGeral(){
         ArrayList<Auditavel> itens=new ArrayList<>(); itens.addAll(maquinas); itens.addAll(produtosFabricados);
-        if(itens.isEmpty()){ System.out.println("Nenhum item para auditar."); return; }
-        for(Auditavel a:itens) System.out.println(a.gerarRelatorioDiagnostico());
+        if(itens.isEmpty()){ 
+            System.out.println("Nenhum item para auditar."); 
+            return; 
+        }
+        for(Auditavel a:itens) {
+            System.out.println(a.gerarRelatorioDiagnostico());
+        }
     }
 
 
-    private double calcularCustoProducao(Demanda d,int q){ double custo=0; for(Maquina m:d.getProduto().getProcessoProducao()) custo+=m.getCustoOperacao(); return custo*q; }
+    private double calcularCustoProducao(Demanda d,int q){ 
+        double custo=0; 
+        for(Maquina m:d.getProduto().getProcessoProducao()) {
+            custo+=m.getCustoOperacao();  
+        }
+        return custo*q;
+    }
 
     private static int lerInt(String msg){
          while(true){ 
@@ -206,6 +222,13 @@ public class GerenciadorProducao {
        }
     }
 
-    public boolean gastar(double valor){if(getBudget()>=valor){budget-=valor; return true;}else return false;}
+    public boolean gastar(double valor){
+        if(getBudget()>=valor){
+            budget-=valor; 
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }

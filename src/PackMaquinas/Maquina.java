@@ -62,14 +62,19 @@ public abstract class Maquina implements Auditavel, Aleatorio {
         return Math.max(0, Math.min(quantidade, capacidadeMaxima));
     }
 
-    public boolean reparar(Cenario cenario, GerenciadorProducao g) {if(g.gastar(getCustoOperacao()*10)){health = cenario.getDescricao().equals("Ideal") ? numeroAleatorio(80, 100):numeroAleatorio(50, 80);return true;}return false;}
+    public boolean reparar(Cenario cenario, GerenciadorProducao g) {
+        if(g.gastar(getCustoOperacao()*10)){
+            health = cenario.getDescricao().equals("Ideal") ? numeroAleatorio(80, 100):numeroAleatorio(50, 80);
+            return true;
+        }
+        return false;
+    }
 
     @Override
-    public boolean precisaManutencao() { return health < 30.0; }
+    public boolean precisaManutencao() { return health < 20.0; }
 
     @Override
     public String gerarRelatorioDiagnostico() {
-        return String.format("Maquina: %s | Tipo: %s | Saude: %.1f/100 | Manutencao: %s",
-                nome, getTipo(), health, precisaManutencao() ? "SIM" : "NAO");
+        return String.format("Maquina: %s | Tipo: %s | Saude: %.1f/100 | Manutencao: %s",nome, getTipo(), health, precisaManutencao() ? "SIM" : "NAO");
     }
 }
